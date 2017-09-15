@@ -1,0 +1,18 @@
+{
+  "name": "pwc-laravel55",
+  "version": "0.0.1",
+  "description": "PowerCrud Laravel 5.5 Generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "powercrud",
+    "pwc",
+    "laravel",
+    "crud",
+    "generator"
+  ],
+  "author": "Tiago Silva Pereira Rodrigues",
+  "license": "MIT"
+}
