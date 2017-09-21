@@ -23,6 +23,9 @@ class Create{{model.namePluralCapitalized}}Table extends Migration
             {{!-- Enum Field --}}
             {{else if (equal type 'enum')}}
             $table->enum('{{name}}',[{{#each value}}'{{value}}',{{/each}}]){{#if default}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
+            {{!-- Boolean Field --}}
+            {{else if (equal type 'boolean')}}
+            $table->boolean('{{name}}'){{#if default}}->default({{default}}){{/if}}{{#unless required}}->nullable(){{/unless}};
             {{!-- Other Fields --}}
             {{else}}
             $table->{{type}}('{{name}}'{{#if size}},{{size}}{{/if}}){{#if default}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};

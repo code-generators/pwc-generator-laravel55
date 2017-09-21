@@ -28,6 +28,9 @@ class Plug {
 
         this.migrationTemplateFile = __dirname + '/base/MigrationTemplate.php';
         this.migrationsDirectory = 'database/migrations/';
+
+        this.viewTemplatesDirectory = __dirname + '/base/views/';
+        this.viewsDirectory = 'resources/views/home/';
     }
 
     initProject(project) {
@@ -79,6 +82,7 @@ class Plug {
         if(!model.isOnlyModel() && !model.isRelationship()) {    
             this.makeControllerFile(model);    
             this.makeRequestFile(model);    
+            this.makeViewFiles(model);    
         }
     }
 
@@ -110,6 +114,18 @@ class Plug {
     makeRequestFile(model) {
         let requestFile = this.requestsDirectory + 'Store' + model.getNameCapitalized() + '.php';
         this.utils.makeFileFromTemplate(requestFile, this.requestTemplateFile, {model: model});
+    }
+
+    makeViewFiles(model) {
+        let views = {
+            'index': 'IndexViewTemplate.php'
+        };
+
+        Object.keys(views).map((viewName) => {
+            let viewFile = this.viewsDirectory + model.getNamePlural() + '/' + viewName + '.blade.php',
+                templateFile = this.viewTemplatesDirectory + views[viewName];
+            this.utils.makeFileFromTemplate(viewFile,  templateFile, {model: model});
+        });
     }
 
     finalizeProject() {
