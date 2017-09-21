@@ -16,8 +16,18 @@ class Plug {
     initSettings() {
         this.routesTemplateFile = __dirname + '/base/RoutesTemplate.php';
         this.routesFile = 'routes/web.php';
+
         this.modelTemplateFile = __dirname + '/base/ModelTemplate.php';
         this.modelsDirectory = 'app/Models/';
+
+        this.controllerTemplateFile = __dirname + '/base/ControllerTemplate.php';
+        this.controllersDirectory = 'app/Http/Controllers/';
+
+        this.requestTemplateFile = __dirname + '/base/RequestTemplate.php';
+        this.requestsDirectory = 'app/Http/Requests/';
+
+        this.migrationTemplateFile = __dirname + '/base/MigrationTemplate.php';
+        this.migrationsDirectory = 'database/migrations/';
     }
 
     initProject(project) {
@@ -63,12 +73,43 @@ class Plug {
     }
 
     initModel(model) {
-        this.makeModelFile(model);    
+        this.makeMigrationFile(model);
+        this.makeModelFile(model);
+        
+        if(!model.isOnlyModel() && !model.isRelationship()) {    
+            this.makeControllerFile(model);    
+            this.makeRequestFile(model);    
+        }
+    }
+
+    makeMigrationFile(model) {
+        let migrationFile = this.makeMigrationName(model);
+        this.utils.makeFileFromTemplate(migrationFile, this.migrationTemplateFile, {model: model});
+    }
+
+    makeMigrationName(model) {
+        let pad = require('pad'),
+            date = new Date(),
+            month = pad(2, (date.getMonth() + 1).toString(), '0'),
+            modelIndex = pad(6, model.getIndex().toString(), '0'),
+            migrationPrefix = date.getFullYear() + '_' + month + '_' + date.getDate() + '_' + modelIndex;
+        
+        return this.migrationsDirectory + migrationPrefix + '_create_' + model.getNamePluralSnakeCase() + '_table.php';
     }
 
     makeModelFile(model) {
         let modelFile = this.modelsDirectory + model.getNameCapitalized() + '.php';
         this.utils.makeFileFromTemplate(modelFile, this.modelTemplateFile, {model: model});
+    }
+
+    makeControllerFile(model) {
+        let controllerFile = this.controllersDirectory + model.getNameCapitalized() + 'Controller.php';
+        this.utils.makeFileFromTemplate(controllerFile, this.controllerTemplateFile, {model: model});
+    }
+
+    makeRequestFile(model) {
+        let requestFile = this.requestsDirectory + 'Store' + model.getNameCapitalized() + '.php';
+        this.utils.makeFileFromTemplate(requestFile, this.requestTemplateFile, {model: model});
     }
 
     finalizeProject() {

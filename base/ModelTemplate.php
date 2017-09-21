@@ -18,4 +18,13 @@ class {{model.nameCapitalized}} extends Model
         {{/if}}
         {{/each}}
     ];
+
+    protected $casts = [
+        {{!-- Model fields --}}
+        {{#each model.fields}}
+        {{#if (equal type 'boolean') }}
+        '{{name}}' => 'boolean',
+        {{/if}}
+        {{/each}}
+    ];
 }

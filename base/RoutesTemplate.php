@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 {{#each models}}
-{{#if (false onlyModel)}}
+{{#unless onlyModel}}
 Route::resource('{{ namePlural }}', '{{ nameCapitalized }}Controller');
-{{/if}}
+{{/unless}}
 {{/each}}

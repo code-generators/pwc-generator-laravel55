@@ -14,5 +14,8 @@
     "generator"
   ],
   "author": "Tiago Silva Pereira Rodrigues",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "pad": "^1.1.0"
+  }
 }
