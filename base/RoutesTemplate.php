@@ -17,10 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'auth', 'prefix' => 'home', 'as' => 'home.'], function() {
+    Route::get('/', 'HomeController@index');
 
-{{#each models}}
-{{#unless onlyModel}}
-Route::resource('{{ namePlural }}', '{{ nameCapitalized }}Controller');
-{{/unless}}
-{{/each}}
+    {{#each models}}
+    {{#unless onlyModel}}
+    Route::resource('{{ namePlural }}', '{{ nameCapitalized }}Controller');
+    {{/unless}}
+    {{/each}}
+});

@@ -18,11 +18,11 @@ class Create{{model.namePluralCapitalized}}Table extends Migration
             {{!-- Model fields --}}
             {{#each model.fields}}
             {{!-- String, File or Image Field --}}
-            {{#if (equal type 'string' 'file' 'image')}}
+            {{#if (in type 'string' 'file' 'image')}}
             $table->string('{{name}}'{{#if size}},{{size}}{{/if}}){{#if default}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
             {{!-- Enum Field --}}
             {{else if (equal type 'enum')}}
-            $table->enum('{{name}}',[{{#each value}}'{{value}}',{{/each}}]){{#if default}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
+            $table->enum('{{name}}',[{{#each items}}'{{value}}',{{/each}}]){{#if default}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
             {{!-- Boolean Field --}}
             {{else if (equal type 'boolean')}}
             $table->boolean('{{name}}'){{#if default}}->default({{default}}){{/if}}{{#unless required}}->nullable(){{/unless}};

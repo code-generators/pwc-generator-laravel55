@@ -118,7 +118,10 @@ class Plug {
 
     makeViewFiles(model) {
         let views = {
-            'index': 'IndexViewTemplate.php'
+            'index': 'IndexViewTemplate.php',
+            'create': 'CreateViewTemplate.php',
+            'form': 'FormViewTemplate.php',
+            'edit': 'EditViewTemplate.php',
         };
 
         Object.keys(views).map((viewName) => {

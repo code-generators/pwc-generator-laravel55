@@ -15,7 +15,7 @@ class {{model.nameCapitalized}}Controller extends Controller
     public function index()
     {
         ${{model.namePlural}} = {{model.nameCapitalized}}::paginate(10);
-        return view('{{model.namePlural}}.index')
+        return view('home.{{model.namePlural}}.index')
             ->with('{{model.namePlural}}', ${{model.namePlural}});
     }
 
@@ -26,7 +26,7 @@ class {{model.nameCapitalized}}Controller extends Controller
      */
     public function create()
     {
-        return view('{{model.namePlural}}.create');
+        return view('home.{{model.namePlural}}.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class {{model.nameCapitalized}}Controller extends Controller
      */
     public function show({{model.nameCapitalized}} ${{model.name}})
     {
-        return view('{{model.namePlural}}.show')->with('{{model.name}}', ${{model.name}});
+        return view('home.{{model.namePlural}}.show')->with('{{model.name}}', ${{model.name}});
     }
 
     /**
@@ -64,7 +64,7 @@ class {{model.nameCapitalized}}Controller extends Controller
      */
     public function edit({{model.nameCapitalized}} ${{model.name}})
     {
-        return view('{{model.namePlural}}.edit')->with('{{model.name}}', ${{model.name}});
+        return view('home.{{model.namePlural}}.edit')->with('{{model.name}}', ${{model.name}});
     }
 
     /**
