@@ -19,6 +19,17 @@ class {{model.nameCapitalized}} extends Model
         {{/each}}
     ];
 
+    protected $dates = [
+        {{!-- Model fields --}}
+        {{#each model.fields}}
+        {{#if (equal type 'date') }}
+        '{{name}}',
+        {{/if}}
+        {{/each}}
+        'created_at',
+        'updated_at',
+    ];
+
     protected $casts = [
         {{!-- Model fields --}}
         {{#each model.fields}}

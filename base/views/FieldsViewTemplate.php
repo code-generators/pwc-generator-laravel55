@@ -32,7 +32,8 @@
 {{else if (equal element 'checkbox')}}
 <div class="form-group col-xs-12 col-sm-6">
     {!! Form::label('{{name}}', '{{label}}') !!}
-    {!! Form::checkbox('{{name}}', {{#if value}}'{{value}}'{{else}}null{{/if}}) !!}
+    {!! Form::hidden('{{name}}', false) !!}
+    {!! Form::checkbox('{{name}}', true) !!}
 </div>
 
 {{else if (equal element 'date')}}

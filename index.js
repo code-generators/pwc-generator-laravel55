@@ -55,6 +55,7 @@ class Plug {
         this.utils.goToProjectFolder(this.project); 
         this.addRequirements();
         this.makeRoutesFile();
+        this.makeAppLayoutViewFile();
         this.proccessModels();
     }
 
@@ -67,6 +68,14 @@ class Plug {
     makeRoutesFile() {
         let models = this.project.models;
         this.utils.makeFileFromTemplate(this.routesFile, this.routesTemplateFile, {models: models});
+    }
+
+    makeAppLayoutViewFile() {
+        let project = this.project,
+            viewFile = 'resources/views/layouts/app.blade.php',
+            templateFile = this.viewTemplatesDirectory + 'AppViewTemplate.php';
+            
+        this.utils.makeFileFromTemplate(viewFile, templateFile, {project: project});
     }
 
     proccessModels() {
