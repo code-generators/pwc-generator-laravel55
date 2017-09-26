@@ -120,8 +120,10 @@ class Plug {
         let views = {
             'index': 'IndexViewTemplate.php',
             'create': 'CreateViewTemplate.php',
-            'form': 'FormViewTemplate.php',
+            'fields': 'FieldsViewTemplate.php',
             'edit': 'EditViewTemplate.php',
+            'show': 'ShowViewTemplate.php',
+            'show_fields': 'ShowFieldsViewTemplate.php',
         };
 
         Object.keys(views).map((viewName) => {

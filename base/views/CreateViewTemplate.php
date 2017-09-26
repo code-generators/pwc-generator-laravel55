@@ -15,7 +15,7 @@
         <div class="panel-body">
             {!! Form::open(['route' => 'home.{{model.namePlural}}.store', 'files' => true]) !!}    
         
-                @include('home.{{model.namePlural}}.form')
+                @include('home.{{model.namePlural}}.fields')
 
                 <div class="form-group col-xs-12 col-sm-12">
                     {!! Form::submit('Save', ['class' => 'btn btn-success']) !!}

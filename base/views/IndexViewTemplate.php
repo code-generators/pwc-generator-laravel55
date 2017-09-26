@@ -14,7 +14,7 @@
             
             <div class="row">
                 <div class="col-sm-2">
-                    <a href="\{{ route('home.{{model.namePlural}}.create') }}" class="btn btn-primary"><i class="fa fa-plus fa-fw"></i> New {{model.description}}</a>
+                    <a href="\{{ route('home.{{model.namePlural}}.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> {{model.description}}</a>
                 </div>
                 <div class="col-sm-10">
                     <div class="input-group">
@@ -34,7 +34,9 @@
                 <thead>
                     <tr>
                         {{#each model.fields}}
+                        {{#if inList}}
                         <th>{{label}}</th>
+                        {{/if}}
                         {{/each}}
                         <th class="action"></th>
                     </tr>
@@ -43,11 +45,18 @@
                 @foreach(${{model.namePlural}} as ${{model.name}})
                     <tr>
                         {{#each model.fields}}
+                        {{#if inList}}
                         <td>\{{ ${{@root.model.name}}->{{name}} }}</td>
+                        {{/if}}
                         {{/each}}
-                        <td>
-                        <a href="\{{ route('home.{{model.namePlural}}.edit', ${{model.name}}->id) }}" class="btn btn-xs btn-default"> <i class="fa fa-edit fa-fw"></i>Edit</a>
-                        <a class="btn btn-danger btn-xs" href="\{{ route('home.{{model.namePlural}}.destroy', ${{model.name}}->id) }}"><i class="fa fa-trash fa-fw"></i> Delete</a>
+                        <td class="text-right">
+                        {!! Form::open(['route' => ['home.{{model.namePlural}}.destroy', ${{model.name}}->id], 'method' => 'delete']) !!}
+                            <div class='btn-group'>
+                                <a href="\{{ route('home.{{model.namePlural}}.show', ${{model.name}}->id) }}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>
+                                <a href="\{{ route('home.{{model.namePlural}}.edit', ${{model.name}}->id) }}" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i></a>
+                                {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure to delete this item?')"]) !!}
+                            </div>
+                        {!! Form::close() !!}
                         </td>
                     </tr>
                 @endforeach
