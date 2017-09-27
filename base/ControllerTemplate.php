@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\\{{model.nameCapitalized}};
 use Illuminate\Http\Request;
+{{!-- Model foreign keys --}}
+{{#each model.belongsToRelationships}}
+use App\Models\\{{relatedModel.nameCapitalized}};
+{{/each}}
 
 class {{model.nameCapitalized}}Controller extends Controller
 {
@@ -26,7 +30,12 @@ class {{model.nameCapitalized}}Controller extends Controller
      */
     public function create()
     {
-        return view('home.{{model.namePlural}}.create');
+        {{!-- Model foreign keys --}}
+        {{#each model.belongsToRelationships}}
+        ${{relatedModel.namePlural}} = {{relatedModel.nameCapitalized}}::pluck('name', 'id');
+        {{/each}}
+        return view('home.{{model.namePlural}}.create'){{#unless model.belongsToRelationships }};{{else}}{{#each model.belongsToRelationships}}
+        ->with('{{relatedModel.namePlural}}', ${{relatedModel.namePlural}}){{/each}};{{/unless}}
     }
 
     /**
@@ -64,7 +73,12 @@ class {{model.nameCapitalized}}Controller extends Controller
      */
     public function edit({{model.nameCapitalized}} ${{model.name}})
     {
-        return view('home.{{model.namePlural}}.edit')->with('{{model.name}}', ${{model.name}});
+        {{!-- Model foreign keys --}}
+        {{#each model.belongsToRelationships}}
+        ${{relatedModel.namePlural}} = {{relatedModel.nameCapitalized}}::pluck('name', 'id');
+        {{/each}}
+        return view('home.{{model.namePlural}}.edit')->with('{{model.name}}', ${{model.name}}){{#unless model.belongsToRelationships }};{{else}}{{#each model.belongsToRelationships}}
+        ->with('{{relatedModel.namePlural}}', ${{relatedModel.namePlural}}){{/each}};{{/unless}}
     }
 
     /**

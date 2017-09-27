@@ -32,6 +32,12 @@ class Create{{model.namePluralCapitalized}}Table extends Migration
             {{/if}}
             {{/each}}
             $table->timestamps();
+
+            {{!-- Model foreign keys --}}
+            {{#each model.belongsToRelationships}}
+            $table->unsignedInteger('{{foreignKeyName}}');
+            $table->foreign('{{foreignKeyName}}')->references('id')->on('{{relatedModel.namePlural}}'){{#unless required}}->nullable(){{/unless}};
+            {{/each}}
         });
     }
 

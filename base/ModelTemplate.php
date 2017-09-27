@@ -12,10 +12,8 @@ class {{model.nameCapitalized}} extends Model
         '{{name}}',
         {{/each}}
         {{!-- Model foreign keys --}}
-        {{#each model.relationships}}
-        {{#if hasForeignKey}}
+        {{#each model.belongsToRelationships}}
         '{{foreignKeyName}}',
-        {{/if}}
         {{/each}}
     ];
 
@@ -38,4 +36,10 @@ class {{model.nameCapitalized}} extends Model
         {{/if}}
         {{/each}}
     ];
+
+    {{#each model.belongsToRelationships}}
+    public function {{name}}() {
+        return $this->belongsTo({{relatedModel.nameCapitalized}}::class);
+    }
+    {{/each}}
 }

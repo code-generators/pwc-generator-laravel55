@@ -72,7 +72,7 @@ class Plug {
 
     proccessModels() {
         this.project.models.forEach((model, index) =>{
-            this.initModel(model); 
+            this.initModel(model);
         });
     }
 

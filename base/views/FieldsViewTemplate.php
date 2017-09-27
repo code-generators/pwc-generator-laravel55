@@ -1,3 +1,11 @@
+{{!-- Model foreign keys --}}
+{{#each model.belongsToRelationships}}
+<div class="form-group col-xs-12 col-sm-12">
+    {!! Form::label('{{foreignKeyName}}', '{{relatedModel.nameCapitalized}}') !!}
+    {!! Form::select('{{foreignKeyName}}', ${{relatedModel.namePlural}}, null, ['class' => 'form-control'{{#if required}}, 'required' => 'required'{{/if}}]) !!}
+</div>
+{{/each}}
+
 {{#each model.fields}}
 {{#if (equal element 'text')}}
 <div class="form-group col-xs-12 col-sm-6">
