@@ -19,16 +19,16 @@ class Create{{model.namePluralCapitalized}}Table extends Migration
             {{#each model.fields}}
             {{!-- String, File or Image Field --}}
             {{#if (in type 'string' 'file' 'image')}}
-            $table->string('{{name}}'{{#if size}},{{size}}{{/if}}){{#if default}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
+            $table->string('{{name}}'{{#if size}},{{size}}{{/if}}){{#if hasDefault}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
             {{!-- Enum Field --}}
             {{else if (equal type 'enum')}}
-            $table->enum('{{name}}',[{{#each items}}'{{value}}',{{/each}}]){{#if default}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
+            $table->enum('{{name}}',[{{#each items}}'{{value}}',{{/each}}]){{#if hasDefault}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
             {{!-- Boolean Field --}}
             {{else if (equal type 'boolean')}}
-            $table->boolean('{{name}}'){{#if default}}->default({{default}}){{/if}}{{#unless required}}->nullable(){{/unless}};
+            $table->boolean('{{name}}'){{#if hasDefault}}->default({{default}}){{/if}}{{#unless required}}->nullable(){{/unless}};
             {{!-- Other Fields --}}
             {{else}}
-            $table->{{type}}('{{name}}'{{#if size}},{{size}}{{/if}}){{#if default}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
+            $table->{{type}}('{{name}}'{{#if size}},{{size}}{{/if}}){{#if hasDefault}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
             {{/if}}
             {{/each}}
             $table->timestamps();

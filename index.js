@@ -14,23 +14,6 @@ class Plug {
     }
 
     initSettings() {
-        this.routesTemplateFile = __dirname + '/base/RoutesTemplate.php';
-        this.routesFile = 'routes/web.php';
-
-        this.modelTemplateFile = __dirname + '/base/ModelTemplate.php';
-        this.modelsDirectory = 'app/Models/';
-
-        this.controllerTemplateFile = __dirname + '/base/ControllerTemplate.php';
-        this.controllersDirectory = 'app/Http/Controllers/';
-
-        this.requestTemplateFile = __dirname + '/base/RequestTemplate.php';
-        this.requestsDirectory = 'app/Http/Requests/';
-
-        this.migrationTemplateFile = __dirname + '/base/MigrationTemplate.php';
-        this.migrationsDirectory = 'database/migrations/';
-
-        this.viewTemplatesDirectory = __dirname + '/base/views/';
-        this.viewsDirectory = 'resources/views/home/';
     }
 
     initProject(project) {
@@ -54,6 +37,7 @@ class Plug {
     startCodeGeneration() {
         this.utils.goToProjectFolder(this.project); 
         this.addRequirements();
+        this.makeAdditionalDirectories();
         this.makeRoutesFile();
         this.makeAppLayoutViewFile();
         this.proccessModels();
@@ -65,16 +49,24 @@ class Plug {
         //this.utils.executeCommand('composer dump-autoload');
     }
 
+    makeAdditionalDirectories() {
+        let fontAwesomeTemplateDirectory = __dirname + '/base/folders/font-awesome',
+            fontAwesomeDirectory = 'public/css/';
+
+        this.utils.makeFolderFromTemplate(fontAwesomeDirectory, fontAwesomeTemplateDirectory);
+    }
+
     makeRoutesFile() {
-        let models = this.project.models;
-        this.utils.makeFileFromTemplate(this.routesFile, this.routesTemplateFile, {models: models});
+        let routesTemplateFile = __dirname + '/base/RoutesTemplate.php',
+            routesFile = 'routes/web.php';
+        this.utils.makeFileFromTemplate(routesFile, routesTemplateFile, {models: this.project.models});
     }
 
     makeAppLayoutViewFile() {
         let project = this.project,
             viewFile = 'resources/views/layouts/app.blade.php',
-            templateFile = this.viewTemplatesDirectory + 'AppViewTemplate.php';
-            
+            templateFile = __dirname + '/base/views/AppViewTemplate.php';
+
         this.utils.makeFileFromTemplate(viewFile, templateFile, {project: project});
     }
 
@@ -96,33 +88,43 @@ class Plug {
     }
 
     makeMigrationFile(model) {
-        let migrationFile = this.makeMigrationName(model);
-        this.utils.makeFileFromTemplate(migrationFile, this.migrationTemplateFile, {model: model});
+        let migrationTemplateFile = __dirname + '/base/MigrationTemplate.php',
+            migrationFile = this.makeMigrationName(model);
+
+        this.utils.makeFileFromTemplate(migrationFile, migrationTemplateFile, {model: model});
     }
 
     makeMigrationName(model) {
         let pad = require('pad'),
-            date = new Date(),
-            month = pad(2, (date.getMonth() + 1).toString(), '0'),
-            modelIndex = pad(6, model.getIndex().toString(), '0'),
-            migrationPrefix = date.getFullYear() + '_' + month + '_' + date.getDate() + '_' + modelIndex;
+            modelIndex = pad(model.getIndex().toString(), 6, '0'),
+            migrationPrefix =  '2014_10_13_' + modelIndex,
+            migrationsDirectory = 'database/migrations/';
         
-        return this.migrationsDirectory + migrationPrefix + '_create_' + model.getNamePluralSnakeCase() + '_table.php';
+        return migrationsDirectory + migrationPrefix + '_create_' + model.getNamePluralSnakeCase() + '_table.php';
     }
 
     makeModelFile(model) {
-        let modelFile = this.modelsDirectory + model.getNameCapitalized() + '.php';
-        this.utils.makeFileFromTemplate(modelFile, this.modelTemplateFile, {model: model});
+        let modelTemplateFile = __dirname + '/base/ModelTemplate.php',
+            modelsDirectory = 'app/Models/',
+            modelFile = modelsDirectory + model.getNameCapitalized() + '.php';
+
+        this.utils.makeFileFromTemplate(modelFile, modelTemplateFile, {model: model});
     }
 
     makeControllerFile(model) {
-        let controllerFile = this.controllersDirectory + model.getNameCapitalized() + 'Controller.php';
-        this.utils.makeFileFromTemplate(controllerFile, this.controllerTemplateFile, {model: model});
+        let controllerTemplateFile = __dirname + '/base/ControllerTemplate.php',
+            controllersDirectory = 'app/Http/Controllers/',
+            controllerFile = controllersDirectory + model.getNameCapitalized() + 'Controller.php';
+
+        this.utils.makeFileFromTemplate(controllerFile, controllerTemplateFile, {model: model});
     }
 
     makeRequestFile(model) {
-        let requestFile = this.requestsDirectory + 'Store' + model.getNameCapitalized() + '.php';
-        this.utils.makeFileFromTemplate(requestFile, this.requestTemplateFile, {model: model});
+        let requestTemplateFile = __dirname + '/base/RequestTemplate.php',
+            requestsDirectory = 'app/Http/Requests/',
+            requestFile = requestsDirectory + 'Store' + model.getNameCapitalized() + '.php';
+
+        this.utils.makeFileFromTemplate(requestFile, requestTemplateFile, {model: model});
     }
 
     makeViewFiles(model) {
@@ -136,8 +138,10 @@ class Plug {
         };
 
         Object.keys(views).map((viewName) => {
-            let viewFile = this.viewsDirectory + model.getNamePlural() + '/' + viewName + '.blade.php',
-                templateFile = this.viewTemplatesDirectory + views[viewName];
+            let viewsDirectory = 'resources/views/home/',
+                viewFile = viewsDirectory + model.getNamePlural() + '/' + viewName + '.blade.php',
+                templateFile = __dirname + '/base/views/' + views[viewName];
+
             this.utils.makeFileFromTemplate(viewFile,  templateFile, {model: model});
         });
     }
