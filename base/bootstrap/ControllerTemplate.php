@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\\{{model.nameCapitalized}};
 use Illuminate\Http\Request;
+use App\Http\Requests\Store{{model.nameCapitalized}};
 {{!-- Model foreign keys --}}
 {{#each model.belongsToRelationships}}
 use App\Models\\{{relatedModel.nameCapitalized}};
@@ -16,11 +17,14 @@ class {{model.nameCapitalized}}Controller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        ${{model.namePlural}} = {{model.nameCapitalized}}::paginate(10);
+        $search = $request->get('search', '');
+        ${{model.namePlural}} = {{model.nameCapitalized}}::search($search)->paginate(10);
+
         return view('home.{{model.namePlural}}.index')
-            ->with('{{model.namePlural}}', ${{model.namePlural}});
+            ->with('{{model.namePlural}}', ${{model.namePlural}})
+            ->with('search', $search);
     }
 
     /**
@@ -44,7 +48,7 @@ class {{model.nameCapitalized}}Controller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Store{{model.nameCapitalized}} $request)
     {
         $data = $request->all();
 
@@ -88,7 +92,7 @@ class {{model.nameCapitalized}}Controller extends Controller
      * @param  \App\Models\\{{model.nameCapitalized}}  {{model.name}}
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, {{model.nameCapitalized}} ${{model.name}})
+    public function update(Store{{model.nameCapitalized}} $request, {{model.nameCapitalized}} ${{model.name}})
     {
         $data = $request->all();
         ${{model.name}}->update($data);

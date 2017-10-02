@@ -1,7 +1,7 @@
 {
-  "name": "pwc-laravel55",
+  "name": "pwc-laravel55-king",
   "version": "0.0.1",
-  "description": "PowerCrud Laravel 5.5 Generator",
+  "description": "PowerCrud Laravel 5.5 Generator witj Advanced Features like image upload, master-detail, etc",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -13,6 +13,12 @@
     {!! Form::text('{{name}}', {{#if value}}'{{value}}'{{else}}null{{/if}}, ['class' => 'form-control'{{#if required}}, 'required' => 'required'{{/if}}]) !!}
 </div>
 
+{{else if (equal element 'email')}}
+<div class="form-group col-xs-12 col-sm-6">
+    {!! Form::label('{{name}}', '{{label}}') !!}
+    {!! Form::email('{{name}}', {{#if value}}'{{value}}'{{else}}null{{/if}}, ['class' => 'form-control'{{#if required}}, 'required' => 'required'{{/if}}]) !!}
+</div>
+
 {{else if (equal element 'textarea')}}
 <div class="form-group col-xs-12 col-sm-12">
     {!! Form::label('{{name}}', '{{label}}') !!}
@@ -40,8 +46,8 @@
 {{else if (equal element 'checkbox')}}
 <div class="form-group col-xs-12 col-sm-6">
     {!! Form::label('{{name}}', '{{label}}') !!}
-    {!! Form::hidden('{{name}}', false) !!}
-    {!! Form::checkbox('{{name}}', true) !!}
+    {!! Form::hidden('{{name}}', 0) !!}
+    {!! Form::checkbox('{{name}}', 1) !!}
 </div>
 
 {{else if (equal element 'date')}}
@@ -52,22 +58,27 @@
 
 {{else if (equal element 'file')}}
 {{#if (equal type 'image')}}
-<div>
+<div class="form-group col-xs-12 col-sm-12 text-left">
     @if(isset(${{@root.model.name}}))
         @if(${{@root.model.name}}->{{name}})
-            <img src="\{{ asset(${{@root.model.name}}->image_url) }}" width="150" style="margin: 10px">
+            <img src="\{{ asset(${{@root.model.name}}->getImagePath('{{name}}', 'thumb')) }}" width="150" style="margin: 10px">
         @endif
     @endif
 </div>
 
 <div class="form-group col-xs-12">
     {!! Form::label('{{name}}', '{{label}}') !!}
-    {!! Form::file('{{name}}', [{{#if required}}, 'required' => 'required'{{/if}}]) !!}
+    {!! Form::file('{{name}}', ['accept' => 'image/*'{{#if required}}, 'required' => 'required'{{/if}}]) !!}
 </div>
 {{else}}
 <div class="form-group col-xs-12">
     {!! Form::label('{{name}}', '{{label}}') !!}
-    {!! Form::file('{{name}}', [{{#if required}}, 'required' => 'required'{{/if}}]) !!}
+    @if(isset(${{@root.model.name}}))
+        @if(${{@root.model.name}}->{{name}})
+            <div><a href="\{{ asset($product->getFilePath('{{name}}')) }}" target="_blank">View File</a></div>
+        @endif
+    @endif
+    {!! Form::file('{{name}}', [{{#if mimeTypes}}'accept' => '{{mimeTypesString}}'{{/if}}{{#if required}}, 'required' => 'required'{{/if}}]) !!}
 </div>
 {{/if}}
 

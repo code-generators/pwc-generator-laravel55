@@ -17,12 +17,14 @@
                     <a href="\{{ route('home.{{model.namePlural}}.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> {{model.description}}</a>
                 </div>
                 <div class="col-sm-10">
-                    <div class="input-group">
-                      <input type="text" id="search" name="search" class="form-control" placeholder="Search..." value="">
-                      <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" onclick="utils.search()">Search</button>
-                      </span>
-                    </div>
+                    <form action="">
+                        <div class="input-group">
+                          <input type="text" id="search" name="search" class="form-control" placeholder="Search..." value="\{{ $search }}">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Search</button>
+                          </span>
+                        </div>
+                    </form>
                 </div>
             </div>
 

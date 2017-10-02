@@ -40,24 +40,27 @@ class Plug {
         this.makeAdditionalDirectories();
         this.makeRoutesFile();
         this.makeAppLayoutViewFile();
+        this.makeAlertsLayoutViewFile();
         this.proccessModels();
     }
 
     addRequirements() {
         //this.utils.executeCommand('composer require "laravelcollective/html":"^5.4.0"');
+        //this.utils.executeCommand('composer require "nicolaslopezj/searchable":"1.*"');
+        //this.utils.executeCommand('composer require kingofcode/laravel-uploadable');
         //this.utils.executeCommand('php artisan make:auth');
         //this.utils.executeCommand('composer dump-autoload');
     }
 
     makeAdditionalDirectories() {
-        let fontAwesomeTemplateDirectory = __dirname + '/base/folders/font-awesome',
+        let fontAwesomeTemplateDirectory = __dirname + '/base/bootstrap/folders/font-awesome',
             fontAwesomeDirectory = 'public/css/';
 
         this.utils.makeFolderFromTemplate(fontAwesomeDirectory, fontAwesomeTemplateDirectory);
     }
 
     makeRoutesFile() {
-        let routesTemplateFile = __dirname + '/base/RoutesTemplate.php',
+        let routesTemplateFile = __dirname + '/base/bootstrap/RoutesTemplate.php',
             routesFile = 'routes/web.php';
         this.utils.makeFileFromTemplate(routesFile, routesTemplateFile, {models: this.project.models});
     }
@@ -65,9 +68,16 @@ class Plug {
     makeAppLayoutViewFile() {
         let project = this.project,
             viewFile = 'resources/views/layouts/app.blade.php',
-            templateFile = __dirname + '/base/views/AppViewTemplate.php';
+            templateFile = __dirname + '/base/bootstrap/views/AppViewTemplate.php';
 
         this.utils.makeFileFromTemplate(viewFile, templateFile, {project: project});
+    }
+
+    makeAlertsLayoutViewFile() {
+        let viewFile = 'resources/views/layouts/alerts.blade.php',
+            templateFile = __dirname + '/base/bootstrap/views/AlertsViewTemplate.php';
+
+        this.utils.makeFileFromTemplate(viewFile, templateFile);
     }
 
     proccessModels() {
@@ -88,7 +98,7 @@ class Plug {
     }
 
     makeMigrationFile(model) {
-        let migrationTemplateFile = __dirname + '/base/MigrationTemplate.php',
+        let migrationTemplateFile = __dirname + '/base/bootstrap/MigrationTemplate.php',
             migrationFile = this.makeMigrationName(model);
 
         this.utils.makeFileFromTemplate(migrationFile, migrationTemplateFile, {model: model});
@@ -104,7 +114,7 @@ class Plug {
     }
 
     makeModelFile(model) {
-        let modelTemplateFile = __dirname + '/base/ModelTemplate.php',
+        let modelTemplateFile = __dirname + '/base/bootstrap/ModelTemplate.php',
             modelsDirectory = 'app/Models/',
             modelFile = modelsDirectory + model.getNameCapitalized() + '.php';
 
@@ -112,7 +122,7 @@ class Plug {
     }
 
     makeControllerFile(model) {
-        let controllerTemplateFile = __dirname + '/base/ControllerTemplate.php',
+        let controllerTemplateFile = __dirname + '/base/bootstrap/ControllerTemplate.php',
             controllersDirectory = 'app/Http/Controllers/',
             controllerFile = controllersDirectory + model.getNameCapitalized() + 'Controller.php';
 
@@ -120,7 +130,7 @@ class Plug {
     }
 
     makeRequestFile(model) {
-        let requestTemplateFile = __dirname + '/base/RequestTemplate.php',
+        let requestTemplateFile = __dirname + '/base/bootstrap/RequestTemplate.php',
             requestsDirectory = 'app/Http/Requests/',
             requestFile = requestsDirectory + 'Store' + model.getNameCapitalized() + '.php';
 
@@ -140,7 +150,7 @@ class Plug {
         Object.keys(views).map((viewName) => {
             let viewsDirectory = 'resources/views/home/',
                 viewFile = viewsDirectory + model.getNamePlural() + '/' + viewName + '.blade.php',
-                templateFile = __dirname + '/base/views/' + views[viewName];
+                templateFile = __dirname + '/base/bootstrap/views/' + views[viewName];
 
             this.utils.makeFileFromTemplate(viewFile,  templateFile, {model: model});
         });

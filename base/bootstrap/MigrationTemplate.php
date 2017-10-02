@@ -31,13 +31,14 @@ class Create{{model.namePluralCapitalized}}Table extends Migration
             $table->{{type}}('{{name}}'{{#if size}},{{size}}{{/if}}){{#if hasDefault}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
             {{/if}}
             {{/each}}
-            $table->timestamps();
 
             {{!-- Model foreign keys --}}
             {{#each model.belongsToRelationships}}
             $table->unsignedInteger('{{foreignKeyName}}');
             $table->foreign('{{foreignKeyName}}')->references('id')->on('{{relatedModel.namePlural}}'){{#unless required}}->nullable(){{/unless}};
             {{/each}}
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
