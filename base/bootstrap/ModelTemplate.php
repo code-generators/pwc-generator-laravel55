@@ -73,25 +73,25 @@ class {{model.nameCapitalized}} extends Model
     ];
 
     {{#each model.belongsToRelationships}}
-    public function {{name}}() {
+    public function {{alias}}() {
         return $this->belongsTo({{relatedModel.nameCapitalized}}::class{{#if differentForeignKeyName}}, '{{foreignKeyName}}'{{/if}});
     }
 
     {{/each}}
     {{#each model.belongsToManyRelationships}}
-    public function {{namePlural}}() {
+    public function {{aliasPlural}}() {
         return $this->belongsToMany({{relatedModel.nameCapitalized}}::class);
     }
 
     {{/each}}
     {{#each model.hasOneRelationships}}
-    public function {{name}}() {
+    public function {{alias}}() {
         return $this->hasOne({{relatedModel.nameCapitalized}}::class);
     }
 
     {{/each}}
     {{#each model.hasManyRelationships}}
-    public function {{namePlural}}() {
+    public function {{aliasPlural}}() {
         return $this->hasMany({{relatedModel.nameCapitalized}}::class);
     }
 

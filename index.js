@@ -93,7 +93,8 @@ class Plug {
         if(!model.isOnlyModel() && !model.isRelationship()) {    
             this.makeControllerFile(model);    
             this.makeRequestFile(model);    
-            this.makeViewFiles(model);    
+            this.makeViewFiles(model);
+            this.makeSimpleDatagridFiles(model);
         }
     }
 
@@ -153,6 +154,18 @@ class Plug {
                 templateFile = __dirname + '/base/bootstrap/views/' + views[viewName];
 
             this.utils.makeFileFromTemplate(viewFile,  templateFile, {model: model});
+        });
+    }
+
+    makeSimpleDatagridFiles(model) {
+        let simpleDetailTemplateFile = __dirname + '/base/bootstrap/javascript/SimpleDatagridVueComponentTemplate.vue',
+            simpleDetailDirectory = 'resources/assets/js/components/';
+
+        model.hasManyRelationships.forEach((relationship) => {
+            if(relationship.element == 'simple-datagrid') {
+                let simpleDetailFile = simpleDetailDirectory + relationship.getNamePluralCapitalized() + 'Component.vue';
+                this.utils.makeFileFromTemplate(simpleDetailFile, simpleDetailTemplateFile, {model: model, relationship: relationship});
+            }
         });
     }
 

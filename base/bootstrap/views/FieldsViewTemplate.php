@@ -84,3 +84,15 @@
 
 {{/if}}
 {{/each}}
+
+{{#each model.hasManyRelationships}}
+<div class="col-sm-12">
+    <h4>{{relatedModel.namePluralCapitalized}}</h4>
+
+    <{{aliasPlural}} 
+        form="{{relatedModel.name}}-form" 
+        {{relatedModel.namePlural}})="\{{ isset(${{relatedModel.name}}) ? ${{relatedModel.name}}->{{aliasPlural}} : '[]' }}">
+    </{{aliasPlural}}>
+</div>
+
+{{/each}}

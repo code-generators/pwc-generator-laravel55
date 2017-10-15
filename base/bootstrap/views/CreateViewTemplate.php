@@ -13,7 +13,7 @@
             <h3>New {{model.description}}</h3>
         </div>
         <div class="panel-body">
-            {!! Form::open(['route' => 'home.{{model.namePlural}}.store', 'files' => true]) !!}    
+            {!! Form::open(['route' => 'home.{{model.namePlural}}.store', 'files' => true, 'id' => '{{model.name}}-form']) !!}    
         
                 @include('home.{{model.namePlural}}.fields')
 

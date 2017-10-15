@@ -13,7 +13,7 @@
             <h3>Edit {{model.description}}</h3>
         </div>
         <div class="panel-body">
-            {!! Form::model(${{model.name}}, ['route' => ['home.{{model.namePlural}}.update', ${{model.name}}->id], 'method' => 'patch', 'files' => true]) !!}    
+            {!! Form::model(${{model.name}}, ['route' => ['home.{{model.namePlural}}.update', ${{model.name}}->id], 'method' => 'patch', 'files' => true, 'id' => '{{model.name}}-form']) !!}    
         
                 @include('home.{{model.namePlural}}.fields')
 
