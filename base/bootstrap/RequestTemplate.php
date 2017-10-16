@@ -30,6 +30,20 @@ class Store{{model.nameCapitalized}} extends FormRequest
             '{{name}}' => '{{validationString}}',
             {{/if}}
             {{/each}}
+
+            {{#each model.belongsToRelationships}}
+            {{#if validation}}
+            '{{foreignKeyName}}' => '{{validationString}}',
+            {{/if}}
+            {{/each}}
+
+            {{#each model.hasManyRelationships}}
+            {{#if (equal element 'simple-datagrid')}}
+            {{#each relatedModel.fields}}
+            {{#if validation}}'{{../aliasPlural}}.*.{{name}}',{{/if}}
+            {{/each}}
+            {{/if}}
+            {{/each}}
         ];
     }
 }

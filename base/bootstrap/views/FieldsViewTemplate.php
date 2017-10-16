@@ -86,13 +86,15 @@
 {{/each}}
 
 {{#each model.hasManyRelationships}}
+{{#if (equal element 'simple-datagrid')}}
 <div class="col-sm-12">
     <h4>{{relatedModel.namePluralCapitalized}}</h4>
 
-    <{{aliasPlural}} 
-        form="{{relatedModel.name}}-form" 
-        {{relatedModel.namePlural}})="\{{ isset(${{relatedModel.name}}) ? ${{relatedModel.name}}->{{aliasPlural}} : '[]' }}">
-    </{{aliasPlural}}>
+    <{{namePluralSlugCase}} 
+        form="{{@root.model.name}}-form" 
+        {{aliasPlural}}="\{{ isset(${{@root.model.name}}) ? ${{@root.model.name}}->{{aliasPlural}} : '[]' }}">
+    </{{namePluralSlugCase}}>
 </div>
+{{/if}}
 
 {{/each}}

@@ -4,8 +4,8 @@ class Plug {
 
     constructor(utils) {
         this.utils = utils;
+        this.initAttributes();
         this.testDependencies();
-        this.initSettings();
     }
 
     testDependencies() {
@@ -13,7 +13,8 @@ class Plug {
         this.utils.testDependency('laravel');
     }
 
-    initSettings() {
+    initAttributes() {
+        this.simpleDatagridComponents = [];
     }
 
     initProject(project) {
@@ -31,6 +32,7 @@ class Plug {
         let command = 'laravel new ' + this.project.name;
         this.utils.executeCommand(command, () => {
             this.startCodeGeneration();
+            this.finalizeProject();
         });
     }
 
@@ -42,6 +44,7 @@ class Plug {
         this.makeAppLayoutViewFile();
         this.makeAlertsLayoutViewFile();
         this.proccessModels();
+        this.makeAppJavascriptFile();
     }
 
     addRequirements() {
@@ -158,19 +161,29 @@ class Plug {
     }
 
     makeSimpleDatagridFiles(model) {
-        let simpleDetailTemplateFile = __dirname + '/base/bootstrap/javascript/SimpleDatagridVueComponentTemplate.vue',
-            simpleDetailDirectory = 'resources/assets/js/components/';
+        let simpleDatagridTemplateFile = __dirname + '/base/bootstrap/javascript/SimpleDatagridVueComponentTemplate.vue',
+            simpleDatagridDirectory = 'resources/assets/js/components/';
 
         model.hasManyRelationships.forEach((relationship) => {
             if(relationship.element == 'simple-datagrid') {
-                let simpleDetailFile = simpleDetailDirectory + relationship.getNamePluralCapitalized() + 'Component.vue';
-                this.utils.makeFileFromTemplate(simpleDetailFile, simpleDetailTemplateFile, {model: model, relationship: relationship});
+                let simpleDatagridFile = simpleDatagridDirectory + relationship.getNamePluralCapitalized() + 'Component.vue';
+
+                this.simpleDatagridComponents.push({component: relationship.getNamePluralCapitalized()});    
+                this.utils.makeFileFromTemplate(simpleDatagridFile, simpleDatagridTemplateFile, {model: model, relationship: relationship});
             }
         });
     }
 
-    finalizeProject() {
+    makeAppJavascriptFile() {
+        let appJavascriptTemplateFile = __dirname + '/base/bootstrap/javascript/AppJavascriptTemplate.js',
+            appJavascriptFile = 'resources/assets/js/app.js';
+        
+        this.utils.makeFileFromTemplate(appJavascriptFile, appJavascriptTemplateFile, {simpleDatagridComponents: this.simpleDatagridComponents});
+    }
 
+    finalizeProject() {
+        //this.utils.executeCommand('npm install');
+        this.utils.executeCommand('npm run dev');
     }
 
 }

@@ -86,13 +86,13 @@ class {{model.nameCapitalized}} extends Model
     {{/each}}
     {{#each model.hasOneRelationships}}
     public function {{alias}}() {
-        return $this->hasOne({{relatedModel.nameCapitalized}}::class);
+        return $this->hasOne({{relatedModel.nameCapitalized}}::class{{#if differentForeignKeyName}}, '{{foreignKeyName}}'{{/if}});
     }
 
     {{/each}}
     {{#each model.hasManyRelationships}}
     public function {{aliasPlural}}() {
-        return $this->hasMany({{relatedModel.nameCapitalized}}::class);
+        return $this->hasMany({{relatedModel.nameCapitalized}}::class{{#if differentForeignKeyName}}, '{{foreignKeyName}}'{{/if}});
     }
 
     {{/each}}

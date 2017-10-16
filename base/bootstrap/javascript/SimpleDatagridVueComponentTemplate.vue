@@ -16,7 +16,9 @@
     <table class="table table-bordered table-form">
         <thead>
             <tr>
-                <th>{{ relationship.namePluralCapitalized }}</th>
+                {{#each relationship.relatedModel.fields}}
+                <th>{{ label }}</th>
+                {{/each}}
                 <th></th>
             </tr>
         </thead>
@@ -24,7 +26,57 @@
             <tr v-for="({{ relationship.alias }}, index) in list">
                 {{#each relationship.relatedModel.fields}}
                 <td>
-                    <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="text" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}">
+                {{#if (equal element 'text')}}
+                <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="text" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}"
+                {{#if value}} value="{{value}}"{{/if}}{{#if required}} required="required"{{/if}}>
+
+                {{else if (equal element 'email')}}
+                <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="email" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}"
+                {{#if value}} value="{{value}}"{{/if}}{{#if required}} required="required"{{/if}}>
+
+                {{else if (equal element 'textarea')}}
+                <textarea :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}"
+                {{#if required}} required="required"{{/if}}>{{#if value}}{{value}}{{/if}}</textarea>
+
+                {{else if (equal element 'number')}}
+                <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="number" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}"{{#if value}} value="{{value}}"{{/if}}{{#if required}} required="required"{{/if}}{{#if (equal type 'decimal') }} step="0.1"{{/if}}>
+
+                {{else if (equal element 'password')}}
+                <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="password" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}"
+                {{#if required}} required="required"{{/if}}>
+
+                {{else if (equal element 'select')}}
+                <select :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}"
+                {{#if required}} required="required"{{/if}}>
+                    <option value="">---</option>
+                    {{#each items}}
+                    <option value="{{value}}">{{label}}</option>
+                    {{/each}}
+                </select>
+
+                {{else if (equal element 'checkbox')}}
+                <div>
+                    <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="checkbox" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}"
+                value="1"{{#if required}} required="required"{{/if}}>
+                </div>
+
+                {{else if (equal element 'date')}}
+                <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="date" class="form-control" v-model="{{ @root.relationship.alias }}.{{ name }}"
+                {{#if value}} value="{{value}}"{{/if}}{{#if required}} required="required"{{/if}}>
+
+                {{else if (equal element 'file')}}
+                {{#if (equal type 'image')}}
+                <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="file" 
+                {{#if required}} required="required"{{/if}} accept="image/*">
+                
+                {{else}}
+                <div class="form-group col-xs-12">
+                    <input :form="form" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ name }}]'" type="file" 
+                {{#if required}} required="required"{{/if}} {{#if mimeTypes}}accept="{{mimeTypesString}}"{{/if}}>
+                </div>
+                {{/if}}
+
+                {{/if}}
                 </td>
                 {{/each}}
                 <td class="text-center">
@@ -34,7 +86,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="2">
+                <td colspan="{{add relationship.relatedModel.fieldsCount 1}}">
                     <span @click="addLine" class="add-button">+ Add Item</span>
                 </td>
             </tr>
@@ -44,7 +96,7 @@
 
 <script>
     export default {
-        props: ['form', '{{ relationship.relatedModel.namePlural }}'],
+        props: ['form', '{{ relationship.aliasPlural }}'],
 
         data () {
             return {
@@ -53,14 +105,14 @@
         },
 
         mounted () {
-            this.list = JSON.parse(this.{{ relationship.relatedModel.namePlural }});
+            this.list = JSON.parse(this.{{ relationship.aliasPlural }});
         },
 
         methods: {
             addLine: function() {
                 let lineData = {
                     {{#each relationship.relatedModel.fields}}
-                    {{ name }}: ''
+                    {{ name }}: '',
                     {{/each}}
                 };
 

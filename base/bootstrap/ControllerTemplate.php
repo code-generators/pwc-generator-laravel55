@@ -9,6 +9,9 @@ use App\Http\Requests\Store{{model.nameCapitalized}};
 {{#each model.belongsToRelationships}}
 use App\Models\\{{relatedModel.nameCapitalized}};
 {{/each}}
+{{#each model.hasManyRelationships}}
+use App\Models\\{{relatedModel.nameCapitalized}};
+{{/each}}
 
 class {{model.nameCapitalized}}Controller extends Controller
 {
@@ -54,6 +57,17 @@ class {{model.nameCapitalized}}Controller extends Controller
 
         ${{model.name}} = {{model.nameCapitalized}}::create($data);
 
+        {{#each model.hasManyRelationships}}
+        {{#if (equal element 'simple-datagrid')}}
+        ${{aliasPlural}} = collect($request->{{aliasPlural}})->transform(function(${{alias}}) {
+            return new {{relatedModel.nameCapitalized}}(${{alias}});
+        });
+
+        ${{@root.model.name}}->{{aliasPlural}}()->delete();
+        ${{@root.model.name}}->{{aliasPlural}}()->saveMany(${{aliasPlural}});
+        {{/if}}
+        {{/each}}
+
         return redirect()->route('home.{{model.namePlural}}.edit', ${{model.name}}->id)
             ->withSuccess('Saved successfuly!');
     }
@@ -96,6 +110,17 @@ class {{model.nameCapitalized}}Controller extends Controller
     {
         $data = $request->all();
         ${{model.name}}->update($data);
+
+        {{#each model.hasManyRelationships}}
+        {{#if (equal element 'simple-datagrid')}}
+        ${{aliasPlural}} = collect($request->{{aliasPlural}})->transform(function(${{alias}}) {
+            return new {{relatedModel.nameCapitalized}}(${{alias}});
+        });
+
+        ${{@root.model.name}}->{{aliasPlural}}()->delete();
+        ${{@root.model.name}}->{{aliasPlural}}()->saveMany(${{aliasPlural}});
+        {{/if}}
+        {{/each}}
 
         return redirect()->route('home.{{model.namePlural}}.edit', ${{model.name}}->id)
             ->withSuccess('Saved successfuly!');
