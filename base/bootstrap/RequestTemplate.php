@@ -40,7 +40,12 @@ class Store{{model.nameCapitalized}} extends FormRequest
             {{#each model.hasManyRelationships}}
             {{#if (equal element 'simple-datagrid')}}
             {{#each relatedModel.fields}}
-            {{#if validation}}'{{../aliasPlural}}.*.{{name}}',{{/if}}
+            {{#if validation}}'{{../aliasPlural}}.*.{{name}}'  => '{{validationString}}',{{/if}}
+            {{/each}}
+            {{#each relatedModel.belongsToRelationships}}
+            {{#if element}}
+            {{#if validation}}'{{../aliasPlural}}.*.{{foreignKeyName}}'  => '{{validationString}}',{{/if}}
+            {{/if}}
             {{/each}}
             {{/if}}
             {{/each}}
