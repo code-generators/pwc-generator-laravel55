@@ -16,6 +16,14 @@
     <table class="table table-bordered table-form">
         <thead>
             <tr>
+                {{!-- Relationships --}}
+                {{#each relationship.relatedModel.belongsToRelationships}}
+                {{#if element}}
+                <th>{{ relatedModel.description }}</th>
+                {{/if}}
+                {{/each}}
+                
+                {{!-- Model fields --}}
                 {{#each relationship.relatedModel.fields}}
                 <th>{{ label }}</th>
                 {{/each}}
@@ -24,6 +32,20 @@
         </thead>
         <tbody>
             <tr v-for="({{ relationship.alias }}, index) in list">
+                {{!-- Relationships --}}
+                {{#each relationship.relatedModel.belongsToRelationships}}
+                {{#if element}}
+                <td>
+                    <select class="form-control" v-model="{{ @root.relationship.alias }}.{{ foreignKeyName }}" :name="'{{ @root.relationship.aliasPlural }}[' + index + '][{{ foreignKeyName }}]'">
+                      <option value="">---</option>
+                      <option v-for="{{ relatedModel.name }} in list_{{ relatedModel.namePlural }}" v-bind:value="{{ relatedModel.name }}.id">
+                        \{{ {{ relatedModel.name }}.{{displayField}} }}
+                      </option>
+                    </select>
+                </td>
+                {{/if}}
+                {{/each}}
+
                 {{#each relationship.relatedModel.fields}}
                 <td>
                 {{#if (equal element 'text')}}
@@ -86,7 +108,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="{{add relationship.relatedModel.fieldsCount 1}}">
+                <td colspan="100%">
                     <span @click="addLine" class="add-button">+ Add Item</span>
                 </td>
             </tr>
@@ -96,21 +118,44 @@
 
 <script>
     export default {
-        props: ['form', '{{ relationship.aliasPlural }}'],
+        props: [
+            'form', 
+            '{{ relationship.aliasPlural  }}',
+            {{#each relationship.relatedModel.belongsToRelationships}}
+            {{#if element}}
+            '{{ aliasPlural  }}',
+            {{/if}}
+            {{/each}}
+        ],
 
         data () {
             return {
-                list: []
+                list: [],
+                {{#each relationship.relatedModel.belongsToRelationships}}
+                {{#if element}}
+                list_{{ aliasPlural }}: [],
+                {{/if}}
+                {{/each}}
             }
         },
 
         mounted () {
             this.list = JSON.parse(this.{{ relationship.aliasPlural }});
+            {{#each relationship.relatedModel.belongsToRelationships}}
+            {{#if element}}
+            this.list_{{ aliasPlural }} = JSON.parse(this.{{ aliasPlural }});
+            {{/if}}
+            {{/each}}
         },
 
         methods: {
             addLine: function() {
                 let lineData = {
+                    {{#each relationship.relatedModel.belongsToRelationships}}
+                    {{#if element}}
+                    {{ foreignKeyName }}: '',
+                    {{/if}}
+                    {{/each}}
                     {{#each relationship.relatedModel.fields}}
                     {{ name }}: '',
                     {{/each}}

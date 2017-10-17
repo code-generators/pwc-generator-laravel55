@@ -1,7 +1,7 @@
 {{!-- Model foreign keys --}}
 {{#each model.belongsToRelationships}}
 <div class="form-group col-xs-12 col-sm-12">
-    {!! Form::label('{{foreignKeyName}}', '{{relatedModel.nameCapitalized}}') !!}
+    {!! Form::label('{{foreignKeyName}}', '{{relatedModel.description}}') !!}
     {!! Form::select('{{foreignKeyName}}', ${{relatedModel.namePlural}}, null, ['class' => 'form-control'{{#if required}}, 'required' => 'required'{{/if}}]) !!}
 </div>
 {{/each}}
@@ -88,10 +88,15 @@
 {{#each model.hasManyRelationships}}
 {{#if (equal element 'simple-datagrid')}}
 <div class="col-sm-12">
-    <h4>{{relatedModel.namePluralCapitalized}}</h4>
+    <h4>{{relatedModel.descriptionPlural}}</h4>
 
     <{{namePluralSlugCase}} 
         form="{{@root.model.name}}-form" 
+        {{#each relatedModel.belongsToRelationships}}
+        {{#if element}}
+        {{aliasPlural}}="\{{ isset(${{aliasPlural}}) ? ${{aliasPlural}} : '[]' }}"
+        {{/if}}
+        {{/each}}
         {{aliasPlural}}="\{{ isset(${{@root.model.name}}) ? ${{@root.model.name}}->{{aliasPlural}} : '[]' }}">
     </{{namePluralSlugCase}}>
 </div>

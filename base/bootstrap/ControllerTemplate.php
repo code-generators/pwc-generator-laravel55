@@ -12,6 +12,16 @@ use App\Models\\{{relatedModel.nameCapitalized}};
 {{#each model.hasManyRelationships}}
 use App\Models\\{{relatedModel.nameCapitalized}};
 {{/each}}
+{{!-- For each to get the belongsTo relationships inside hasMany relationships --}}
+{{#each model.hasManyRelationships}}
+{{#if (equal element 'simple-datagrid')}}
+{{#each relatedModel.belongsToRelationships}}
+{{#if element}}
+use App\Models\\{{relatedModel.nameCapitalized}};
+{{/if}}
+{{/each}}
+{{/if}}
+{{/each}}
 
 class {{model.nameCapitalized}}Controller extends Controller
 {
@@ -39,9 +49,30 @@ class {{model.nameCapitalized}}Controller extends Controller
     {
         {{!-- Model foreign keys --}}
         {{#each model.belongsToRelationships}}
-        ${{relatedModel.namePlural}} = {{relatedModel.nameCapitalized}}::pluck('name', 'id');
+        ${{relatedModel.namePlural}} = {{relatedModel.nameCapitalized}}::pluck('{{displayField}}', 'id');
         {{/each}}
-        return view('home.{{model.namePlural}}.create'){{#unless model.belongsToRelationships }};{{else}}{{#each model.belongsToRelationships}}
+        {{!-- For each to get the belongsTo relationships inside hasMany relationships --}}
+        {{#each model.hasManyRelationships}}
+        {{#if (equal element 'simple-datagrid')}}
+        {{#each relatedModel.belongsToRelationships}}
+        {{#if element}}
+        ${{relatedModel.namePlural}} = {{relatedModel.nameCapitalized}}::select('id', '{{displayField}}')->get();
+        {{/if}}
+        {{/each}}
+        {{/if}}
+        {{/each}}
+
+        {{!-- Return the views --}}
+        return view('home.{{model.namePlural}}.create')
+        {{#each model.hasManyRelationships}}
+        {{#if (equal element 'simple-datagrid')}}
+        {{#each relatedModel.belongsToRelationships}}
+        {{#if element}}
+        ->with('{{relatedModel.namePlural}}', ${{relatedModel.namePlural}})
+        {{/if}}
+        {{/each}}
+        {{/if}}
+        {{/each}}{{#unless model.belongsToRelationships }};{{else}}{{#each model.belongsToRelationships}}
         ->with('{{relatedModel.namePlural}}', ${{relatedModel.namePlural}}){{/each}};{{/unless}}
     }
 
@@ -93,9 +124,30 @@ class {{model.nameCapitalized}}Controller extends Controller
     {
         {{!-- Model foreign keys --}}
         {{#each model.belongsToRelationships}}
-        ${{relatedModel.namePlural}} = {{relatedModel.nameCapitalized}}::pluck('name', 'id');
+        ${{relatedModel.namePlural}} = {{relatedModel.nameCapitalized}}::pluck('{{displayField}}', 'id');
         {{/each}}
-        return view('home.{{model.namePlural}}.edit')->with('{{model.name}}', ${{model.name}}){{#unless model.belongsToRelationships }};{{else}}{{#each model.belongsToRelationships}}
+        {{!-- For each to get the belongsTo relationships inside hasMany relationships --}}
+        {{#each model.hasManyRelationships}}
+        {{#if (equal element 'simple-datagrid')}}
+        {{#each relatedModel.belongsToRelationships}}
+        {{#if element}}
+        ${{relatedModel.namePlural}} = {{relatedModel.nameCapitalized}}::select('id', '{{displayField}}')->get();
+        {{/if}}
+        {{/each}}
+        {{/if}}
+        {{/each}}
+
+        {{!-- Return the views --}}
+        return view('home.{{model.namePlural}}.edit')->with('{{model.name}}', ${{model.name}})
+        {{#each model.hasManyRelationships}}
+        {{#if (equal element 'simple-datagrid')}}
+        {{#each relatedModel.belongsToRelationships}}
+        {{#if element}}
+        ->with('{{relatedModel.namePlural}}', ${{relatedModel.namePlural}})
+        {{/if}}
+        {{/each}}
+        {{/if}}
+        {{/each}}{{#unless model.belongsToRelationships }};{{else}}{{#each model.belongsToRelationships}}
         ->with('{{relatedModel.namePlural}}', ${{relatedModel.namePlural}}){{/each}};{{/unless}}
     }
 
