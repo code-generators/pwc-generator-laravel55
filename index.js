@@ -11,6 +11,7 @@ class Plug {
     testDependencies() {
         this.utils.testDependency('composer');
         this.utils.testDependency('laravel');
+        this.utils.testDependency('npm');
     }
 
     initAttributes() {
@@ -21,7 +22,6 @@ class Plug {
         try{
             this.project = project;
             this.startLaravelProject();
-            this.finalizeProject();
         }catch(e){
             console.log(e.stack);
             throw 'Problem generating the project: ' + e;
@@ -37,8 +37,8 @@ class Plug {
     }
 
     startCodeGeneration() {
-        this.utils.goToProjectFolder(this.project); 
-        this.addRequirements();
+        this.project.createGenerationFile(); 
+        this.testFirstGenerationAndAddRequirements();
         this.makeAdditionalDirectories();
         this.makeRoutesFile();
         this.makeAppLayoutViewFile();
@@ -47,12 +47,21 @@ class Plug {
         this.makeAppJavascriptFile();
     }
 
+    testFirstGenerationAndAddRequirements() {
+        if(this.project.isFirstGeneration()) {
+            this.utils.goToFolder(this.project.name);
+            this.addRequirements();
+        }else{
+            this.utils.goToFolder(this.project.name);
+        }
+    }
+
     addRequirements() {
-        //this.utils.executeCommand('composer require "laravelcollective/html":"^5.4.0"');
-        //this.utils.executeCommand('composer require "nicolaslopezj/searchable":"1.*"');
-        //this.utils.executeCommand('composer require kingofcode/laravel-uploadable');
-        //this.utils.executeCommand('php artisan make:auth');
-        //this.utils.executeCommand('composer dump-autoload');
+        this.utils.executeCommand('composer require "laravelcollective/html":"^5.4.0"');
+        this.utils.executeCommand('composer require "nicolaslopezj/searchable":"1.*"');
+        this.utils.executeCommand('composer require kingofcode/laravel-uploadable');
+        this.utils.executeCommand('php artisan make:auth');
+        this.utils.executeCommand('composer dump-autoload');
     }
 
     makeAdditionalDirectories() {
@@ -182,8 +191,11 @@ class Plug {
     }
 
     finalizeProject() {
-        //this.utils.executeCommand('npm install');
+        console.log('Running "npm install". It may take several minutes...');
+        this.utils.executeCommand('npm install');
         this.utils.executeCommand('npm run dev');
+        this.utils.goToFolder('..');
+        this.project.finalizeGenerationFile();
     }
 
 }
