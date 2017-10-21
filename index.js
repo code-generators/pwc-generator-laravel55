@@ -193,13 +193,16 @@ class Plug {
     finalizeProject() {
         
         if(this.project.isFirstGeneration()) {
-            console.log('Running "npm install". It may take several minutes...');
+            this.utils.executeCommand('php artisan storage:link');
+            console.log('Installing NPM Modules (Like Laravel Mix). It may take several minutes...');
             this.utils.executeCommand('npm install');
         }
         
-        console.log('Compiling assets with Laravel Mix. It may take several minutes...');
+        console.log('Compiling assets with Laravel Mix. It may take some minutes...');
         this.utils.executeCommand('npm run dev');
         this.project.finalizeGenerationFile();
+        console.log('Project successfully generated!');
+
     }
 
 }
