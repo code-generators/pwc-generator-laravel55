@@ -37,7 +37,9 @@ class Plug {
     }
 
     startCodeGeneration() {
+        this.utils.goToFolder(this.project.name);
         this.project.createGenerationFile(); 
+        this.project.deleteRegisteredFiles();
         this.testFirstGenerationAndAddRequirements();
         this.makeAdditionalDirectories();
         this.makeRoutesFile();
@@ -49,10 +51,7 @@ class Plug {
 
     testFirstGenerationAndAddRequirements() {
         if(this.project.isFirstGeneration()) {
-            this.utils.goToFolder(this.project.name);
             this.addRequirements();
-        }else{
-            this.utils.goToFolder(this.project.name);
         }
     }
 
@@ -114,6 +113,7 @@ class Plug {
         let migrationTemplateFile = __dirname + '/base/bootstrap/MigrationTemplate.php',
             migrationFile = this.makeMigrationName(model);
 
+        this.project.registerFileGeneration(migrationFile);
         this.utils.makeFileFromTemplate(migrationFile, migrationTemplateFile, {model: model});
     }
 
@@ -191,10 +191,14 @@ class Plug {
     }
 
     finalizeProject() {
-        console.log('Running "npm install". It may take several minutes...');
-        this.utils.executeCommand('npm install');
+        
+        if(this.project.isFirstGeneration()) {
+            console.log('Running "npm install". It may take several minutes...');
+            this.utils.executeCommand('npm install');
+        }
+        
+        console.log('Compiling assets with Laravel Mix. It may take several minutes...');
         this.utils.executeCommand('npm run dev');
-        this.utils.goToFolder('..');
         this.project.finalizeGenerationFile();
     }
 
