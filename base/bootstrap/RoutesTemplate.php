@@ -20,9 +20,10 @@ Auth::routes();
 Route::group(['middleware' => 'auth', 'prefix' => 'home', 'as' => 'home.'], function() {
     Route::get('/', 'HomeController@index');
 
-    {{#each models}}
-    {{#unless onlyModel}}
-    Route::resource('{{ namePlural }}', '{{ nameCapitalized }}Controller');
-    {{/unless}}
-    {{/each}}
+    <% for (let model of this.models) { %>
+    <% if (!model.isOnlyModel()) { %>
+    Route::resource('<$ model.getNamePlural() $>', '<$ model.getNameCapitalized() $>Controller');   
+    <% } %>
+    <% } %>
+
 });

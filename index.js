@@ -32,7 +32,7 @@ class Plug {
         let command = 'laravel new ' + this.project.name;
         this.utils.executeCommand(command, () => {
             this.startCodeGeneration();
-            this.finalizeProject();
+            //this.finalizeProject();
         });
     }
 
@@ -43,10 +43,10 @@ class Plug {
         this.testFirstGenerationAndAddRequirements();
         this.makeAdditionalDirectories();
         this.makeRoutesFile();
-        this.makeAppLayoutViewFile();
-        this.makeAlertsLayoutViewFile();
+        //this.makeAppLayoutViewFile();
+        //this.makeAlertsLayoutViewFile();
         this.proccessModels();
-        this.makeAppJavascriptFile();
+        //this.makeAppJavascriptFile();
     }
 
     testFirstGenerationAndAddRequirements() {
@@ -99,14 +99,14 @@ class Plug {
 
     initModel(model) {
         this.makeMigrationFile(model);
-        this.makeModelFile(model);
+        /*this.makeModelFile(model);
         
         if(!model.isOnlyModel() && !model.isRelationship()) {    
             this.makeControllerFile(model);    
             this.makeRequestFile(model);    
             this.makeViewFiles(model);
             this.makeSimpleDatagridFiles(model);
-        }
+        }*/
     }
 
     makeMigrationFile(model) {

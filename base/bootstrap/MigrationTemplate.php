@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Create{{model.namePluralCapitalized}}Table extends Migration
+class Create<$ this.model.getNamePluralCapitalized() $>Table extends Migration
 {
     /**
      * Run the migrations.
@@ -13,30 +13,72 @@ class Create{{model.namePluralCapitalized}}Table extends Migration
      */
     public function up()
     {
-        Schema::create('{{model.namePluralSnakeCase}}', function (Blueprint $table) {
+        Schema::create('<$ this.model.getNamePluralSnakeCase() $>', function (Blueprint $table) {
             $table->increments('id');
-            {{!-- Model fields --}}
-            {{#each model.fields}}
-            {{!-- String, File or Image Field --}}
-            {{#if (in type 'string' 'file' 'image')}}
-            $table->string('{{name}}'{{#if size}},{{size}}{{/if}}){{#if hasDefault}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
-            {{!-- Enum Field --}}
-            {{else if (equal type 'enum')}}
-            $table->enum('{{name}}',[{{#each items}}'{{value}}',{{/each}}]){{#if hasDefault}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
-            {{!-- Boolean Field --}}
-            {{else if (equal type 'boolean')}}
-            $table->boolean('{{name}}'){{#if hasDefault}}->default({{default}}){{/if}}{{#unless required}}->nullable(){{/unless}};
-            {{!-- Other Fields --}}
-            {{else}}
-            $table->{{type}}('{{name}}'{{#if size}},{{size}}{{/if}}){{#if hasDefault}}->default('{{default}}'){{/if}}{{#unless required}}->nullable(){{/unless}};
-            {{/if}}
-            {{/each}}
+            <# Model fields #>
+            <% for (let field of this.model.fields) { %>
+            <# String, File or Image Field #>
+            <% if (field.type == "string" || field.type == "file" || field.type == "image") { %>
+            $table->string('<$ field.getName() $>'
+            <up if (field.size) { up>
+            ,<$ field.size $>
+            <up } up>)
+            <up if (field.hasDefault) { up>
+            ->default('<$ field.default $>')
+            <up } up>
+            <up if(!field.required) { up>
+            ->nullable()
+            <up } up>;
+            <# Enum Field #>
+            <% } else if (field.type == "enum") { %>
+            $table->enum('<$ field.getName() $>',[
+            <up for (let item of field.items) { up>
+            '<$ item.value $>',
+            <up } up>
+            ])
+            <up if (field.hasDefault) { up>
+            ->default('<$ field.default $>')
+            <up } up>
+            <up if(!field.required) { up>
+            ->nullable()
+            <up } up>;
+            <# Boolean Field #>
+            <% } else if (field.type == "boolean") { %>
+            $table->boolean('<$ field.getName() $>')
+            <up if (field.hasDefault) { up>
+            ->default('<$ field.default $>')
+            <up } up>
+            <up if(!field.required) { up>
+            ->nullable()
+            <up } up>;
+            <# Other Fields #>
+            <% } else { %>
+            $table-><$ field.getType() $>('<$ field.getName() $>'
+            <up if (field.size) { up>
+            ,<$ field.size $>
+            <up } up>)
+            <up if (field.hasDefault) { up>
+            ->default('<$ field.default $>')
+            <up } up>
+            <up if(!field.required) { up>
+            ->nullable()
+            <up } up>;
+            <% } %>
+            <% } %>
+            
+            <# Model foreign keys #>
+            <% if(this.model.belongsToRelationships.length > 0) { %>
+            <% for (let relationship of this.model.belongsToRelationships) { %>
+            $table->unsignedInteger('<$ relationship.foreignKeyName $>');
+            $table->foreign('<$ relationship.foreignKeyName $>')->references('id')->on('<$ relationship.relatedModel.namePlural $>')
+            <up if (!relationship.required) { up>
+            ->nullable()
+            <up } up>;
+            <% } %>
+            <% } else { %>
+            <% this.removeLastBreakLine(); %>
+            <% } %>
 
-            {{!-- Model foreign keys --}}
-            {{#each model.belongsToRelationships}}
-            $table->unsignedInteger('{{foreignKeyName}}');
-            $table->foreign('{{foreignKeyName}}')->references('id')->on('{{relatedModel.namePlural}}'){{#unless required}}->nullable(){{/unless}};
-            {{/each}}
             $table->timestamps();
             $table->softDeletes();
         });
@@ -49,6 +91,6 @@ class Create{{model.namePluralCapitalized}}Table extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('{{model.namePluralSnakeCase}}');
+        Schema::dropIfExists('<$ this.model.getNamePluralSnakeCase() $>');
     }
 }
