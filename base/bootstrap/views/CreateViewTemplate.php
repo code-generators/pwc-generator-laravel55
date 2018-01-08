@@ -4,18 +4,18 @@
 <div class="container-fluid">
     <ol class="breadcrumb">
       <li><a href="/home">Home</a></li>
-      <li><a href="\{{ route('home.{{model.namePlural}}.index') }}">{{model.descriptionPlural}}</a></li>
-      <li class="active">New {{model.description}}</li>
+      <li><a href="{{ route('home.<$ this.model.getNamePlural() $>.index') }}"><$ this.model.getDescriptionPlural() $></a></li>
+      <li class="active">New <$ this.model.getDescription() $></li>
     </ol>
 
     <div class="panel">
         <div class="panel-heading">
-            <h3>New {{model.description}}</h3>
+            <h3>New <$ this.model.getDescription() $></h3>
         </div>
         <div class="panel-body">
-            {!! Form::open(['route' => 'home.{{model.namePlural}}.store', 'files' => true, 'id' => '{{model.name}}-form']) !!}    
+            {!! Form::open(['route' => 'home.<$ this.model.getNamePlural() $>.store', 'files' => true, 'id' => '<$ this.model.getName() $>-form']) !!}    
         
-                @include('home.{{model.namePlural}}.fields')
+                @include('home.<$ this.model.getNamePlural() $>.fields')
 
                 <div class="form-group col-xs-12 col-sm-12">
                     {!! Form::submit('Save', ['class' => 'btn btn-success']) !!}

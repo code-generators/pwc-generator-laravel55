@@ -4,22 +4,22 @@
 <div class="container-fluid">
     <ol class="breadcrumb">
       <li><a href="/home">Home</a></li>
-      <li class="active">{{model.descriptionPlural}}</li>
+      <li class="active"><$ this.model.getDescriptionPlural() $></li>
     </ol>
 
     <div class="panel">
         <div class="panel-heading">
-            <h3>{{model.descriptionPlural}}</h3>
+            <h3><$ this.model.getDescriptionPlural() $></h3>
             <br>
             
             <div class="row">
                 <div class="col-sm-2">
-                    <a href="\{{ route('home.{{model.namePlural}}.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> {{model.description}}</a>
+                    <a href="{{ route('home.<$ this.model.getNamePlural() $>.create') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> <$ this.model.getDescription() $></a>
                 </div>
                 <div class="col-sm-10">
                     <form action="">
                         <div class="input-group">
-                          <input type="text" id="search" name="search" class="form-control" placeholder="Search..." value="\{{ $search }}">
+                          <input type="text" id="search" name="search" class="form-control" placeholder="Search..." value="{{ $search }}">
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Search</button>
                           </span>
@@ -35,27 +35,27 @@
             <table class="table table-stripped table-hover">
                 <thead>
                     <tr>
-                        {{#each model.fields}}
-                        {{#if inList}}
-                        <th>{{label}}</th>
-                        {{/if}}
-                        {{/each}}
+                        <% for (let field of this.model.fields) { %>
+                        <% if (field.isInList()) { %>
+                        <th><$ field.getLabel() $></th>
+                        <% } %>
+                        <% } %>
                         <th class="action"></th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach(${{model.namePlural}} as ${{model.name}})
+                @foreach($<$ this.model.getNamePlural() $> as $<$ this.model.getName() $>)
                     <tr>
-                        {{#each model.fields}}
-                        {{#if inList}}
-                        <td>\{{ ${{@root.model.name}}->{{name}} }}</td>
-                        {{/if}}
-                        {{/each}}
+                        <% for (let field of this.model.fields) { %>
+                        <% if (field.isInList()) { %>
+                        <td>\{{ $<$ this.model.getName() $>-><$ field.getName() $> }}</td>
+                        <% } %>
+                        <% } %>
                         <td class="text-right">
-                        {!! Form::open(['route' => ['home.{{model.namePlural}}.destroy', ${{model.name}}->id], 'method' => 'delete']) !!}
+                        {!! Form::open(['route' => ['home.<$ this.model.getNamePlural() $>.destroy', $<$ this.model.getName() $>->id], 'method' => 'delete']) !!}
                             <div class='btn-group'>
-                                <a href="\{{ route('home.{{model.namePlural}}.show', ${{model.name}}->id) }}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>
-                                <a href="\{{ route('home.{{model.namePlural}}.edit', ${{model.name}}->id) }}" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i></a>
+                                <a href="{{ route('home.<$ this.model.getNamePlural() $>.show', $<$ this.model.getName() $>->id) }}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('home.<$ this.model.getNamePlural() $>.edit', $<$ this.model.getName() $>->id) }}" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i></a>
                                 {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure to delete this item?')"]) !!}
                             </div>
                         {!! Form::close() !!}
@@ -65,7 +65,7 @@
                 </tbody>
             </table>
 
-            {!! ${{model.namePlural}}->render() !!}
+            {!! $<$ this.model.getNamePlural() $>->render() !!}
         </div>
     </div>
 

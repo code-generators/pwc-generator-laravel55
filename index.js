@@ -43,10 +43,10 @@ class Plug {
         this.testFirstGenerationAndAddRequirements();
         this.makeAdditionalDirectories();
         this.makeRoutesFile();
-        //this.makeAppLayoutViewFile();
-        //this.makeAlertsLayoutViewFile();
+        this.makeAppLayoutViewFile();
+        this.makeAlertsLayoutViewFile();
         this.proccessModels();
-        //this.makeAppJavascriptFile();
+        this.makeAppJavascriptFile();
     }
 
     testFirstGenerationAndAddRequirements() {
@@ -71,7 +71,7 @@ class Plug {
     }
 
     makeRoutesFile() {
-        let routesTemplateFile = __dirname + '/base/bootstrap/RoutesTemplate.php',
+        let routesTemplateFile = __dirname + '/base/bootstrap/RoutesTemplate.silverb',
             routesFile = 'routes/web.php';
         this.utils.makeFileFromTemplate(routesFile, routesTemplateFile, {models: this.project.models});
     }
@@ -99,18 +99,18 @@ class Plug {
 
     initModel(model) {
         this.makeMigrationFile(model);
-        /*this.makeModelFile(model);
+        this.makeModelFile(model);
         
         if(!model.isOnlyModel() && !model.isRelationship()) {    
             this.makeControllerFile(model);    
             this.makeRequestFile(model);    
             this.makeViewFiles(model);
             this.makeSimpleDatagridFiles(model);
-        }*/
+        }
     }
 
     makeMigrationFile(model) {
-        let migrationTemplateFile = __dirname + '/base/bootstrap/MigrationTemplate.php',
+        let migrationTemplateFile = __dirname + '/base/bootstrap/MigrationTemplate.silverb',
             migrationFile = this.makeMigrationName(model);
 
         this.project.registerFileGeneration(migrationFile);
@@ -127,7 +127,7 @@ class Plug {
     }
 
     makeModelFile(model) {
-        let modelTemplateFile = __dirname + '/base/bootstrap/ModelTemplate.php',
+        let modelTemplateFile = __dirname + '/base/bootstrap/ModelTemplate.silverb',
             modelsDirectory = 'app/Models/',
             modelFile = modelsDirectory + model.getNameCapitalized() + '.php';
 
@@ -135,7 +135,7 @@ class Plug {
     }
 
     makeControllerFile(model) {
-        let controllerTemplateFile = __dirname + '/base/bootstrap/ControllerTemplate.php',
+        let controllerTemplateFile = __dirname + '/base/bootstrap/ControllerTemplate.silverb',
             controllersDirectory = 'app/Http/Controllers/',
             controllerFile = controllersDirectory + model.getNameCapitalized() + 'Controller.php';
 
@@ -143,7 +143,7 @@ class Plug {
     }
 
     makeRequestFile(model) {
-        let requestTemplateFile = __dirname + '/base/bootstrap/RequestTemplate.php',
+        let requestTemplateFile = __dirname + '/base/bootstrap/RequestTemplate.silverb',
             requestsDirectory = 'app/Http/Requests/',
             requestFile = requestsDirectory + 'Store' + model.getNameCapitalized() + '.php';
 

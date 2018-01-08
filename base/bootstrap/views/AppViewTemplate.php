@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="\{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="\{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ project.name }}</title>
+    <title><$ this.project.getName() $></title>
 
     <!-- Styles -->
-    <link href="\{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="\{{ asset('css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -29,43 +29,43 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="\{{ url('/') }}">
-                        {{ project.name }}
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        <$ this.project.getName() $>
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        {{#each project.models}}
-                        {{#unless onlyModel}}
-                        <li><a href="\{{ route('home.{{namePluralSnakeCase}}.index') }}">{{descriptionPlural}}</a></li>
-                        {{/unless}}
-                        {{/each}}
+                        <% for (let model of this.project.models) { %>
+                        <% if(!model.isOnlyModel()) { %>
+                        <li><a href="{{ route('home.<$ model.getNamePluralSnakeCase() $>.index') }}"><$ model.getDescriptionPlural() $></a></li>
+                        <% } %>
+                        <% } %>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a href="\{{ route('login') }}">Login</a></li>
-                            <li><a href="\{{ route('register') }}">Register</a></li>
+                            <li><a href="{{ route('login') }}">Login</a></li>
+                            <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    \{{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="\{{ route('logout') }}"
+                                        <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
 
-                                        <form id="logout-form" action="\{{ route('logout') }}" method="POST" style="display: none;">
-                                            \{{ csrf_field() }}
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
                                         </form>
                                     </li>
                                 </ul>
@@ -81,6 +81,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="\{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
