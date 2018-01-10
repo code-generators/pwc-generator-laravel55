@@ -30,7 +30,7 @@ class <$ this.model.getNameCapitalized() $> extends Model
     protected $dates = [
         <# Model fields #>
         <% for (let field of this.model.fields) { %>
-        <% if (field.type == "date") { %>
+        <% if (field.type == "date" || field.type == "datetime" || field.type == "timestamp") { %>
         '<$ field.name $>',
         <% } %>
         <% } %>

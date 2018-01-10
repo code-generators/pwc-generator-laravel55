@@ -32,38 +32,40 @@
 
         </div>
         <div class="panel-body">
-            <table class="table table-stripped table-hover">
-                <thead>
-                    <tr>
-                        <% for (let field of this.model.fields) { %>
-                        <% if (field.isInList()) { %>
-                        <th><$ field.getLabel() $></th>
-                        <% } %>
-                        <% } %>
-                        <th class="action"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach($<$ this.model.getNamePlural() $> as $<$ this.model.getName() $>)
-                    <tr>
-                        <% for (let field of this.model.fields) { %>
-                        <% if (field.isInList()) { %>
-                        <td>{{ $<$ this.model.getName() $>-><$ field.getName() $> }}</td>
-                        <% } %>
-                        <% } %>
-                        <td class="text-right">
-                        {!! Form::open(['route' => ['home.<$ this.model.getNamePlural() $>.destroy', $<$ this.model.getName() $>->id], 'method' => 'delete']) !!}
-                            <div class='btn-group'>
-                                <a href="{{ route('home.<$ this.model.getNamePlural() $>.show', $<$ this.model.getName() $>->id) }}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>
-                                <a href="{{ route('home.<$ this.model.getNamePlural() $>.edit', $<$ this.model.getName() $>->id) }}" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i></a>
-                                {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure to delete this item?')"]) !!}
-                            </div>
-                        {!! Form::close() !!}
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-stripped table-hover">
+                    <thead>
+                        <tr>
+                            <% for (let field of this.model.fields) { %>
+                            <% if (field.isInList()) { %>
+                            <th><$ field.getLabel() $></th>
+                            <% } %>
+                            <% } %>
+                            <th class="action"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($<$ this.model.getNamePlural() $> as $<$ this.model.getName() $>)
+                        <tr>
+                            <% for (let field of this.model.fields) { %>
+                            <% if (field.isInList()) { %>
+                            <td>{{ $<$ this.model.getName() $>-><$ field.getName() $> }}</td>
+                            <% } %>
+                            <% } %>
+                            <td class="text-right">
+                            {!! Form::open(['route' => ['home.<$ this.model.getNamePlural() $>.destroy', $<$ this.model.getName() $>->id], 'method' => 'delete']) !!}
+                                <div class='btn-group'>
+                                    <a href="{{ route('home.<$ this.model.getNamePlural() $>.show', $<$ this.model.getName() $>->id) }}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>
+                                    <a href="{{ route('home.<$ this.model.getNamePlural() $>.edit', $<$ this.model.getName() $>->id) }}" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i></a>
+                                    {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => "return confirm('Are you sure to delete this item?')"]) !!}
+                                </div>
+                            {!! Form::close() !!}
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
 
             {!! $<$ this.model.getNamePlural() $>->render() !!}
         </div>

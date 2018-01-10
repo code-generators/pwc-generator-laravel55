@@ -16,7 +16,7 @@
         
                 @include('home.<$ this.model.getNamePlural() $>.show_fields')
 
-                <a href="\{{ route('home.<$ this.model.getNamePlural() $>.index') }}" class="btn btn-default">Back</a>
+                <a href="{{ route('home.<$ this.model.getNamePlural() $>.index') }}" class="btn btn-default">Back</a>
             {!! Form::close() !!}  
         </div>
     </div>
