@@ -32,7 +32,7 @@ class Plug {
         let command = 'laravel new ' + this.project.name;
         this.utils.executeCommand(command, () => {
             this.startCodeGeneration();
-            //this.finalizeProject();
+            this.finalizeProject();
         });
     }
 
@@ -79,14 +79,14 @@ class Plug {
     makeAppLayoutViewFile() {
         let project = this.project,
             viewFile = 'resources/views/layouts/app.blade.php',
-            templateFile = __dirname + '/base/bootstrap/views/AppViewTemplate.php';
+            templateFile = __dirname + '/base/bootstrap/views/AppViewTemplate.silverb';
 
         this.utils.makeFileFromTemplate(viewFile, templateFile, {project: project});
     }
 
     makeAlertsLayoutViewFile() {
         let viewFile = 'resources/views/layouts/alerts.blade.php',
-            templateFile = __dirname + '/base/bootstrap/views/AlertsViewTemplate.php';
+            templateFile = __dirname + '/base/bootstrap/views/AlertsViewTemplate.silverb';
 
         this.utils.makeFileFromTemplate(viewFile, templateFile);
     }
@@ -152,12 +152,12 @@ class Plug {
 
     makeViewFiles(model) {
         let views = {
-            'index': 'IndexViewTemplate.php',
-            'create': 'CreateViewTemplate.php',
-            'fields': 'FieldsViewTemplate.php',
-            'edit': 'EditViewTemplate.php',
-            'show': 'ShowViewTemplate.php',
-            'show_fields': 'ShowFieldsViewTemplate.php',
+            'index': 'IndexViewTemplate.silverb',
+            'create': 'CreateViewTemplate.silverb',
+            'fields': 'FieldsViewTemplate.silverb',
+            'edit': 'EditViewTemplate.silverb',
+            'show': 'ShowViewTemplate.silverb',
+            'show_fields': 'ShowFieldsViewTemplate.silverb',
         };
 
         Object.keys(views).map((viewName) => {
@@ -170,7 +170,7 @@ class Plug {
     }
 
     makeSimpleDatagridFiles(model) {
-        let simpleDatagridTemplateFile = __dirname + '/base/bootstrap/javascript/SimpleDatagridVueComponentTemplate.vue',
+        let simpleDatagridTemplateFile = __dirname + '/base/bootstrap/javascript/SimpleDatagridVueComponentTemplate.silverb',
             simpleDatagridDirectory = 'resources/assets/js/components/';
 
         model.hasManyRelationships.forEach((relationship) => {
@@ -184,7 +184,7 @@ class Plug {
     }
 
     makeAppJavascriptFile() {
-        let appJavascriptTemplateFile = __dirname + '/base/bootstrap/javascript/AppJavascriptTemplate.js',
+        let appJavascriptTemplateFile = __dirname + '/base/bootstrap/javascript/AppJavascriptTemplate.silverb',
             appJavascriptFile = 'resources/assets/js/app.js';
         
         this.utils.makeFileFromTemplate(appJavascriptFile, appJavascriptTemplateFile, {simpleDatagridComponents: this.simpleDatagridComponents});

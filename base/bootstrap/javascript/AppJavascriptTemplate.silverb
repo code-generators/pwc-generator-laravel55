@@ -9,9 +9,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-{{#each simpleDatagridComponents}}
-import {{component}} from './components/{{component}}Component.vue';
-{{/each}}
+<% for(let component of this.simpleDatagridComponents) { %>
+import <$ component.component $> from './components/<$ component.component $>Component.vue';
+<% } %>
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -24,8 +24,8 @@ Vue.component('example', require('./components/ExampleComponent.vue'));
 const app = new Vue({
     el: '#app',
     components: { 
-        {{#each simpleDatagridComponents}}
-        {{component}},
-        {{/each}}
+        <% for(let component of this.simpleDatagridComponents) { %>
+        <$ component.component $>,
+        <% } %>
     }
 });

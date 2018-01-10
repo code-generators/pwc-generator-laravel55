@@ -15,9 +15,10 @@ use App\Models\<$ relationship.relatedModel.getNameCapitalized() $>;
 <# For each to get the belongsTo relationships inside hasMany relationships #>
 <% for (let relationship of this.model.hasManyRelationships) { %>
 <% if (relationship.element == "simple-datagrid") { %>
-<% for (let relatedModelSubRelatioship of relationship.relatedModel.belongsToRelationships) { %>
-<% if (relatedModelSubRelatioship.element) { %>
-use App\Models\<$ relatedModelSubRelatioship.relatedModel.getNameCapitalized() $>;
+<% for (let subRelationship of relationship.relatedModel.belongsToRelationships) { %>
+<# Test if the relationship has an element and the related model is different from the main model #>
+<% if (subRelationship.element && (this.model.getNameCapitalized() != subRelationship.relatedModel.getNameCapitalized())) { %>
+use App\Models\<$ subRelationship.relatedModel.getNameCapitalized() $>;
 <% } %>
 <% } %>
 <% } %>
@@ -54,9 +55,9 @@ class <$ this.model.getNameCapitalized() $>Controller extends Controller
         <# For each to get the belongsTo relationships inside hasMany relationships #>
         <% for (let relationship of this.model.hasManyRelationships) { %>
         <% if (relationship.element == "simple-datagrid") { %>
-        <% for (let relatedModelSubRelatioship of relationship.relatedModel.belongsToRelationships) { %>
-        <% if (relatedModelSubRelatioship.element) { %>
-        $<$ relatedModelSubRelatioship.relatedModel.getNamePlural() $> = <$ relatedModelSubRelatioship.relatedModel.getNameCapitalized() $>::select('id', '<$ relatedModelSubRelatioship.getDisplayField() $>')->get();
+        <% for (let subRelationship of relationship.relatedModel.belongsToRelationships) { %>
+        <% if (subRelationship.element) { %>
+        $<$ subRelationship.relatedModel.getNamePlural() $> = <$ subRelationship.relatedModel.getNameCapitalized() $>::select('id', '<$ subRelationship.getDisplayField() $>')->get();
         <% } %>
         <% } %>
         <% } %>
@@ -66,9 +67,9 @@ class <$ this.model.getNameCapitalized() $>Controller extends Controller
         return view('home.<$ this.model.getNamePlural() $>.create')
         <% for (let relationship of this.model.hasManyRelationships) { %>
         <% if (relationship.element == "simple-datagrid") { %>
-        <% for (let relatedModelSubRelatioship of relationship.relatedModel.belongsToRelationships) { %>
-        <% if (relatedModelSubRelatioship.element) { %>
-            ->with('<$ relatedModelSubRelatioship.relatedModel.getNamePlural() $>', $<$ relatedModelSubRelatioship.relatedModel.getNamePlural() $>)
+        <% for (let subRelationship of relationship.relatedModel.belongsToRelationships) { %>
+        <% if (subRelationship.element) { %>
+            ->with('<$ subRelationship.relatedModel.getNamePlural() $>', $<$ subRelationship.relatedModel.getNamePlural() $>)
         <% } %>
         <% } %>
         <% } %>
@@ -132,9 +133,9 @@ class <$ this.model.getNameCapitalized() $>Controller extends Controller
         <# For each to get the belongsTo relationships inside hasMany relationships #>
         <% for (let relationship of this.model.hasManyRelationships) { %>
         <% if (relationship.element == "simple-datagrid") { %>
-        <% for (let relatedModelSubRelatioship of relationship.relatedModel.belongsToRelationships) { %>
-        <% if (relatedModelSubRelatioship.element) { %>
-        $<$ relatedModelSubRelatioship.relatedModel.getNamePlural() $> = <$ relatedModelSubRelatioship.relatedModel.getNameCapitalized() $>::select('id', '<$ relatedModelSubRelatioship.getDisplayField() $>')->get();
+        <% for (let subRelationship of relationship.relatedModel.belongsToRelationships) { %>
+        <% if (subRelationship.element) { %>
+        $<$ subRelationship.relatedModel.getNamePlural() $> = <$ subRelationship.relatedModel.getNameCapitalized() $>::select('id', '<$ subRelationship.getDisplayField() $>')->get();
         <% } %>
         <% } %>
         <% } %>
@@ -144,9 +145,9 @@ class <$ this.model.getNameCapitalized() $>Controller extends Controller
         return view('home.<$ this.model.getNamePlural() $>.edit')->with('<$ this.model.getName() $>', $<$ this.model.getName() $>)
         <% for (let relationship of this.model.hasManyRelationships) { %>
         <% if (relationship.element == "simple-datagrid") { %>
-        <% for (let relatedModelSubRelatioship of relationship.relatedModel.belongsToRelationships) { %>
-        <% if (relatedModelSubRelatioship.element) { %>
-            ->with('<$ relatedModelSubRelatioship.relatedModel.getNamePlural() $>', $<$ relatedModelSubRelatioship.relatedModel.getNamePlural() $>)
+        <% for (let subRelationship of relationship.relatedModel.belongsToRelationships) { %>
+        <% if (subRelationship.element) { %>
+            ->with('<$ subRelationship.relatedModel.getNamePlural() $>', $<$ subRelationship.relatedModel.getNamePlural() $>)
         <% } %>
         <% } %>
         <% } %>
