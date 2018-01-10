@@ -90,14 +90,14 @@
 <div class="col-sm-12">
     <h4><$ relationship.relatedModel.getDescriptionPlural() $></h4>
 
-    <<$ relationship.getNamePluralSlugCase() $>> 
+    <<$ relationship.getNamePluralSlugCase() $>
         form="<$ this.model.getName() $>-form" 
         <% for (let subRelationship of relationship.relatedModel.belongsToRelationships) { %>
         <% if (subRelationship.element) { %>
-        <$ subRelationship.getAliasPlural() $>="{{ isset($<$ subRelationship.getAliasPlural() $>) ? $<$ subRelationship.getAliasPlural() $> : '[]' }}"
+        <$ subRelationship.getAliasPluralSlugCase() $>="{{ isset($<$ subRelationship.getAliasPlural() $>) ? $<$ subRelationship.getAliasPlural() $> : '[]' }}"
         <% } %>
         <% } %>
-        <$ relationship.getAliasPlural() $>="{{ isset($<$ this.model.getName() $>) ? $<$ this.model.getName() $>-><$ relationship.getAliasPlural() $> : '[]' }}">
+        items="{{ isset($<$ this.model.getName() $>) ? $<$ this.model.getName() $>-><$ relationship.getAliasPlural() $> : '[]' }}">
     </<$ relationship.getNamePluralSlugCase() $>>
 </div>
 <% } %>

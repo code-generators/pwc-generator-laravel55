@@ -120,7 +120,7 @@
     export default {
         props: [
             'form', 
-            '<$ this.relationship.getAliasPlural() $>',
+            'items',
             <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
             <% if(subRelationship.element) { %>
             '<$ subRelationship.getAliasPlural() $>',
@@ -140,7 +140,7 @@
         },
 
         mounted () {
-            this.list = JSON.parse(this.<$ this.relationship.getAliasPlural() $>);
+            this.list = JSON.parse(this.items);
             <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
             <% if(subRelationship.element) { %>
             this.list_<$ subRelationship.getAliasPlural() $> = JSON.parse(this.<$ subRelationship.getAliasPlural() $>);

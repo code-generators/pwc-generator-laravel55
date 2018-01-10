@@ -34,7 +34,7 @@ class <$ this.model.getNameCapitalized() $>Controller extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search', '');
-        $<$ this.model.getNameCapitalized() $> = <$ this.model.getNameCapitalized() $>::search($search)->paginate(10);
+        $<$ this.model.getNamePlural() $> = <$ this.model.getNameCapitalized() $>::search($search)->paginate(10);
 
         return view('home.<$ this.model.getNamePlural() $>.index')
             ->with('<$ this.model.getNamePlural() $>', $<$ this.model.getNamePlural() $>)

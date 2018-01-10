@@ -48,7 +48,7 @@
                     <tr>
                         <% for (let field of this.model.fields) { %>
                         <% if (field.isInList()) { %>
-                        <td>\{{ $<$ this.model.getName() $>-><$ field.getName() $> }}</td>
+                        <td>{{ $<$ this.model.getName() $>-><$ field.getName() $> }}</td>
                         <% } %>
                         <% } %>
                         <td class="text-right">

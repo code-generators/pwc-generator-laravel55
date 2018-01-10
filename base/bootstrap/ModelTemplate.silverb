@@ -99,7 +99,7 @@ class <$ this.model.getNameCapitalized() $> extends Model
     <% } %>
     <# Has Many Relationships #>
     <% for (let relationship of this.model.hasManyRelationships) { %>
-    public function <$ relationship.getAlias() $>() {
+    public function <$ relationship.getAliasPlural() $>() {
         return $this->hasMany(<$ relationship.relatedModel.getNameCapitalized() $>::class<% if (relationship.hasDifferentForeignKeyName()) { %>, '<$ relationship.foreignKeyName $>'<% } %>);
     }
 
