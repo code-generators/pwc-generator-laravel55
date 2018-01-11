@@ -19,7 +19,8 @@
                 <tr>
                     <# Relationships #>
                     <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
-                    <% if(subRelationship.element) { %>
+                    <# Test if the relationship has an element and the related model is different from the main model #>
+                    <% if(subRelationship.element && (this.model.getNameCapitalized() != subRelationship.relatedModel.getNameCapitalized())) { %>
                     <th><$ subRelationship.relatedModel.getDescription() $></th>
                     <% } %>
                     <% } %>
@@ -35,7 +36,8 @@
                 <tr v-for="(<$ this.relationship.getAlias() $>, index) in list">
                     <# Relationships #>
                     <% for (let subRelationship of this.relationship.relatedModel.belongsToRelationships) { %>
-                    <% if(subRelationship.element) { %>
+                    <# Test if the relationship has an element and the related model is different from the main model #>
+                    <% if(subRelationship.element && (this.model.getNameCapitalized() != subRelationship.relatedModel.getNameCapitalized())) { %>
                     <td>
                         <select class="form-control" v-model="<$ this.relationship.getAlias() $>.<$ subRelationship.getForeignKeyName() $>" :name="'<$ this.relationship.getAliasPlural() $>[' + index + '][<$ subRelationship.getForeignKeyName() $>]'">
                         <option value="">---</option>

@@ -46,7 +46,7 @@ class Store<$ this.model.getNameCapitalized() $> extends FormRequest
             <% } %>
             <# Here we have the relationship sub-relations (belongs to), like category in a order item #>
             <% for (let subRelationship of relationship.relatedModel.belongsToRelationships) { %>
-            <% if (subRelationship.element) { %>
+            <% if (subRelationship.element && (this.model.getNameCapitalized() != subRelationship.relatedModel.getNameCapitalized())) { %>
             <% if (subRelationship.validation) { %>
             '<$ relationship.getAliasPlural() $>.*.<$ subRelationship.getForeignKeyName() $>'  => '<$ subRelationship.getValidationAsString() $>',
             <% } %>
