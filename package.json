@@ -1,5 +1,5 @@
 {
-  "name": "pwc-laravel55-base",
+  "name": "pwc-laravel55-platform",
   "version": "0.0.1",
   "description": "PowerCrud Laravel 5.5 Generator witj Advanced Features like image upload, master-detail, etc",
   "main": "index.js",
@@ -13,7 +13,9 @@
     "crud",
     "generator"
   ],
-  "engines" : { "node" : ">=8.9.4" },
+  "engines": {
+    "node": ">=8.9.4"
+  },
   "author": "Tiago Silva Pereira Rodrigues",
   "license": "MIT",
   "dependencies": {

@@ -9,9 +9,7 @@ class Plug {
     }
 
     testDependencies() {
-        this.utils.testDependency('composer');
-        this.utils.testDependency('laravel');
-        this.utils.testDependency('npm');
+        this.utils.testDependency('git');
     }
 
     initAttributes() {
@@ -29,7 +27,7 @@ class Plug {
     }
 
     startLaravelProject() {
-        let command = 'laravel new ' + this.project.name;
+        let command = 'git clone https://github.com/KingOfCodeBrazil/laravel55-basic.git "' + this.project.index + '"';
         this.utils.executeCommand(command, () => {
             this.startCodeGeneration();
             this.finalizeProject();
@@ -40,34 +38,10 @@ class Plug {
         this.utils.goToFolder(this.project.name);
         this.project.createGenerationFile(); 
         this.project.deleteRegisteredFiles();
-        this.testFirstGenerationAndAddRequirements();
-        this.makeAdditionalDirectories();
         this.makeRoutesFile();
         this.makeAppLayoutViewFile();
-        this.makeAlertsLayoutViewFile();
         this.proccessModels();
         this.makeAppJavascriptFile();
-    }
-
-    testFirstGenerationAndAddRequirements() {
-        if(this.project.isFirstGeneration()) {
-            this.addRequirements();
-        }
-    }
-
-    addRequirements() {
-        this.utils.executeCommand('composer require "laravelcollective/html":"^5.4.0"');
-        this.utils.executeCommand('composer require "nicolaslopezj/searchable":"1.*"');
-        this.utils.executeCommand('composer require kingofcode/laravel-uploadable');
-        this.utils.executeCommand('php artisan make:auth');
-        this.utils.executeCommand('composer dump-autoload');
-    }
-
-    makeAdditionalDirectories() {
-        let fontAwesomeTemplateDirectory = __dirname + '/base/bootstrap/folders/font-awesome',
-            fontAwesomeDirectory = 'public/css/';
-
-        this.utils.makeFolderFromTemplate(fontAwesomeDirectory, fontAwesomeTemplateDirectory);
     }
 
     makeRoutesFile() {
@@ -82,13 +56,6 @@ class Plug {
             templateFile = __dirname + '/base/bootstrap/views/AppViewTemplate.silverb';
 
         this.utils.makeFileFromTemplate(viewFile, templateFile, {project: project});
-    }
-
-    makeAlertsLayoutViewFile() {
-        let viewFile = 'resources/views/layouts/alerts.blade.php',
-            templateFile = __dirname + '/base/bootstrap/views/AlertsViewTemplate.silverb';
-
-        this.utils.makeFileFromTemplate(viewFile, templateFile);
     }
 
     proccessModels() {
@@ -191,18 +158,8 @@ class Plug {
     }
 
     finalizeProject() {
-        
-        if(this.project.isFirstGeneration()) {
-            this.utils.executeCommand('php artisan storage:link');
-            console.log('Installing NPM Modules (Like Laravel Mix). It may take several minutes...');
-            this.utils.executeCommand('npm install');
-        }
-        
-        console.log('Compiling assets with Laravel Mix. It may take some minutes...');
-        this.utils.executeCommand('npm run dev');
         this.project.finalizeGenerationFile();
         console.log('Project successfully generated!');
-
     }
 
 }
