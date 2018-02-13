@@ -19,6 +19,7 @@ class Plug {
     initProject(project) {
         try{
             this.project = project;
+            this.projectFolderName = this.project.index;
             this.startLaravelProject();
         }catch(e){
             console.log(e.stack);
@@ -27,7 +28,7 @@ class Plug {
     }
 
     startLaravelProject() {
-        let command = 'git clone https://github.com/KingOfCodeBrazil/laravel55-basic.git "' + this.project.index + '"';
+        let command = 'git clone https://github.com/KingOfCodeBrazil/laravel55-basic.git "' + this.projectFolderName + '"';
         this.utils.executeCommand(command, () => {
             this.startCodeGeneration();
             this.finalizeProject();
@@ -35,7 +36,7 @@ class Plug {
     }
 
     startCodeGeneration() {
-        this.utils.goToFolder(this.project.name);
+        this.utils.goToFolder(this.projectFolderName);
         this.project.createGenerationFile(); 
         this.project.deleteRegisteredFiles();
         this.makeRoutesFile();
