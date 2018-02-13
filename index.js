@@ -5,7 +5,6 @@ class Plug {
     constructor(utils) {
         this.utils = utils;
         this.initAttributes();
-        this.testDependencies();
     }
 
     testDependencies() {
