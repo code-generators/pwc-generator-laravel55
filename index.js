@@ -60,7 +60,10 @@ class Plug {
 
     proccessModels() {
         this.project.models.forEach((model, index) =>{
-            this.initModel(model);
+            // User model hardcoded blocked
+            if(model.name != 'user') {
+                this.initModel(model);
+            }
         });
     }
 
