@@ -194,9 +194,6 @@ class <$ this.model.getNameCapitalized() $>Controller extends Controller
     public function destroy(<$ this.model.getNameCapitalized() $> $<$ this.model.getName() $>)
     {
         <# Deleting Has Many Relationships #>
-        <% for (let relationship of this.model.hasManyRelationships) { %>
-        $<$ this.model.getName() $>->delete<$ relationship.getAliasPluralCapitalized() $>();
-        <% } %>
         $<$ this.model.getName() $>->delete();
         return redirect()->route('home.<$ this.model.getNamePlural() $>.index');
     }

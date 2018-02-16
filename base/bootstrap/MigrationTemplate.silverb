@@ -70,7 +70,7 @@ class Create<$ this.model.getNamePluralCapitalized() $>Table extends Migration
             <% if(this.model.belongsToRelationships.length > 0) { %>
             <% for (let relationship of this.model.belongsToRelationships) { %>
             $table->unsignedInteger('<$ relationship.foreignKeyName $>');
-            $table->foreign('<$ relationship.foreignKeyName $>')->references('id')->on('<$ relationship.relatedModel.namePlural $>')
+            $table->foreign('<$ relationship.foreignKeyName $>')->references('id')->on('<$ relationship.relatedModel.namePlural $>')->onDelete('cascade')
             <up if (!relationship.required) { up>
             ->nullable()
             <up } up>;
