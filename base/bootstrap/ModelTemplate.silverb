@@ -108,5 +108,15 @@ class <$ this.model.getNameCapitalized() $> extends Model
     }
 
     <% } %>
+    <# Deleting Has Many Relationships #>
+    <% for (let relationship of this.model.hasManyRelationships) { %>
+    public function delete<$ relationship.getAliasPluralCapitalized() $>() 
+    {
+        foreach ($this-><$ relationship.getAliasPlural() $> as $<$ relationship.getAlias() $>) {
+            $<$ relationship.getAlias() $>->delete();
+        }
+    }
+
+    <% } %>
 
 }
