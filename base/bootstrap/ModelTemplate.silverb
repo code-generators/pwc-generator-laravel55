@@ -78,28 +78,32 @@ class <$ this.model.getNameCapitalized() $> extends Model
 
     <# Belongs To Relationships #>
     <% for (let relationship of this.model.belongsToRelationships) { %>
-    public function <$ relationship.getAlias() $>() {
+    public function <$ relationship.getAlias() $>() 
+    {
         return $this->belongsTo(<$ relationship.relatedModel.getNameCapitalized() $>::class<% if (relationship.hasDifferentForeignKeyName()) { %>, '<$ relationship.foreignKeyName $>'<% } %>);
     }
 
     <% } %>
     <# Belongs To Many Relationships #>
     <% for (let relationship of this.model.belongsToManyRelationships) { %>
-    public function <$ relationship.getAliasPlural() $>() {
+    public function <$ relationship.getAliasPlural() $>() 
+    {
         return $this->belongsToMany(<$ relationship.relatedModel.getNameCapitalized() $>::class);
     }
 
     <% } %>
     <# Has One Relationships #>
     <% for (let relationship of this.model.hasOneRelationships) { %>
-    public function <$ relationship.getAlias() $>() {
+    public function <$ relationship.getAlias() $>() 
+    {
         return $this->hasOne(<$ relationship.relatedModel.getNameCapitalized() $>::class<% if (relationship.hasDifferentForeignKeyName()) { %>, '<$ relationship.foreignKeyName $>'<% } %>);
     }
 
     <% } %>
     <# Has Many Relationships #>
     <% for (let relationship of this.model.hasManyRelationships) { %>
-    public function <$ relationship.getAliasPlural() $>() {
+    public function <$ relationship.getAliasPlural() $>() 
+    {
         return $this->hasMany(<$ relationship.relatedModel.getNameCapitalized() $>::class<% if (relationship.hasDifferentForeignKeyName()) { %>, '<$ relationship.foreignKeyName $>'<% } %>);
     }
 
