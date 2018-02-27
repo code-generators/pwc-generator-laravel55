@@ -18,7 +18,7 @@ class Plug {
     initProject(project) {
         try{
             this.project = project;
-            this.projectFolderName = this.project.index;
+            this.projectFolderName = this.project.index || this.project.name;
             this.startLaravelProject();
         }catch(e){
             console.log(e.stack);
@@ -40,6 +40,8 @@ class Plug {
         this.project.deleteRegisteredFiles();
         this.makeRoutesFile();
         this.makeAppLayoutViewFile();
+        this.makeAuthServiceProviderFile();
+        this.makePermissionsSeederFile();
         this.proccessModels();
         this.makeAppJavascriptFile();
     }
@@ -58,6 +60,22 @@ class Plug {
         this.utils.makeFileFromTemplate(viewFile, templateFile, {project: project});
     }
 
+    makeAuthServiceProviderFile() {
+        this.utils.makeFileFromTemplate(
+            'app/Providers/AuthServiceProvider.php', 
+            __dirname + '/base/bootstrap/AuthServiceProviderTemplate.silverb', 
+            {project: this.project}
+        );
+    }
+
+    makePermissionsSeederFile() {
+        this.utils.makeFileFromTemplate(
+            'database/seeds/RolesAndPermissionsSeeder.php', 
+            __dirname + '/base/bootstrap/PermissionsSeederTemplate.silverb', 
+            {project: this.project}
+        );
+    }
+
     proccessModels() {
         this.project.models.forEach((model, index) =>{
             // User model hardcoded blocked
@@ -74,6 +92,7 @@ class Plug {
         if(!model.isOnlyModel() && !model.isRelationship()) {    
             this.makeControllerFile(model);    
             this.makeRequestFile(model);    
+            this.makePolicyFile(model);    
             this.makeViewFiles(model);
             this.makeSimpleDatagridFiles(model);
         }
@@ -118,6 +137,14 @@ class Plug {
             requestFile = requestsDirectory + 'Store' + model.getNameCapitalized() + '.php';
 
         this.utils.makeFileFromTemplate(requestFile, requestTemplateFile, {model: model});
+    }
+
+    makePolicyFile(model) {
+        let policyTemplateFile = __dirname + '/base/bootstrap/PolicyTemplate.silverb',
+            policiesDirectory = 'app/Policies/',
+            policyFile = policiesDirectory + model.getNameCapitalized() + 'Policy.php';
+
+        this.utils.makeFileFromTemplate(policyFile, policyTemplateFile, {model: model});
     }
 
     makeViewFiles(model) {
