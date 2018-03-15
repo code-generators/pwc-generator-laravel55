@@ -1,17 +1,18 @@
 {
-  "name": "pwc-laravel55-platform",
+  "name": "pwc-generator-laravel55",
   "version": "0.0.1",
-  "description": "PowerCrud Laravel 5.5 Generator witj Advanced Features like image upload, master-detail, etc",
+  "description": "PWC Laravel 5.5 Code Generator with Advanced Features like image upload, master-detail, ACL, etc",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "powercrud",
     "pwc",
     "laravel",
     "crud",
-    "generator"
+    "generator",
+    "code",
+    "acl"
   ],
   "engines": {
     "node": ">=8.9.4"
