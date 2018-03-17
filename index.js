@@ -5,10 +5,13 @@ class Plug {
     constructor(utils) {
         this.utils = utils;
         this.initAttributes();
+        this.testDependencies();
     }
 
     testDependencies() {
         this.utils.testDependency('git');
+        this.utils.testDependency('composer');
+        this.utils.testDependency('npm');
     }
 
     initAttributes() {
@@ -36,6 +39,11 @@ class Plug {
 
     startCodeGeneration() {
         this.utils.goToFolder(this.projectFolderName);
+        
+        if(this.project.isFirstGeneration()) {
+            this.utils.executeCommand('composer install');
+        }                                               
+        
         this.project.createGenerationFile(); 
         this.project.deleteRegisteredFiles();
         this.makeRoutesFile();
@@ -188,6 +196,14 @@ class Plug {
     }
 
     finalizeProject() {
+        if(this.project.isFirstGeneration()) {
+            this.utils.executeCommand('php artisan storage:link');
+            console.log('Installing NPM Modules (Like Laravel Mix). It may take several minutes...');
+            this.utils.executeCommand('npm install');
+        }
+        
+        console.log('Compiling assets with Laravel Mix. It may take some minutes...');
+        this.utils.executeCommand('npm run dev');
         this.project.finalizeGenerationFile();
         console.log('Project successfully generated!');
     }
