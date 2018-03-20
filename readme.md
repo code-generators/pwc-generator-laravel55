@@ -27,7 +27,7 @@ npm install -g pwc-generator-laravel55
 
 ## How to use
 
-1. First, you need to create a PWC Project File, that is a .yml file representing your complete project. You can see some file samples here.
+1. First, you need to create a PWC Project File, that is a .yml file representing your complete project. You can see more details on [PWC Documentation](https://github.com/pwc-code-generator/docs).
 2. Then you can navigate to the folder in that your project file is through the command line, and run the PWC passing this generator:
 
 ```
